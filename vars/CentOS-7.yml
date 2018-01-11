@@ -1,0 +1,6 @@
+---
+default_vnc_users:
+  - username: 'centos'
+    #port 5901 is 1
+    vnc_num: 1
+    vnc_default_password: mypassword

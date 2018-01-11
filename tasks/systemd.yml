@@ -1,0 +1,56 @@
+---
+- name: create ansible folder, if not already there. For next steps.
+  file:
+    path: /etc/ansible
+
+- name: Ubuntu16.04/Systemd/Cloud combination requires minimum one reboot, regardless of ansible, in order for this to work.
+  shell: touch /etc/ansible/rebooted-once.txt
+  args:
+    chdir: /etc/ansible
+    creates: /etc/ansible/rebooted-once.txt
+  notify: 
+    - reboot once
+    - reboot message
+
+- name: enable persistent services per user
+  shell: /bin/loginctl enable-linger {{ item.username }}
+  with_items: "{{ vnc_users }}"
+
+- name: create systemd directories
+  file:
+    path: "/home/{{ item.username }}/.config/systemd/user"
+    state: directory
+    mode: 0755
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+  with_items: "{{ vnc_users }}"
+  
+- name: checking existence of per-user systemd service files
+  stat:
+    path: "/home/{{ item.username }}/.config/systemd/user/vncserver.service"
+  register: checksystemd
+  with_items: "{{ vnc_users }}"
+    
+- name: Update per-user systemd service files
+  template:
+    src: vncserver.j2
+    dest: "/home/{{ item.item.username }}/.config/systemd/user/vncserver.service"
+    mode: 0644
+    owner: "{{ item.item.username }}"
+    group: "{{ item.item.username }}"
+  when:
+    - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
+  with_items: "{{ checksystemd.results }}"
+  
+- name: systemctl daemon-reload 
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}
+  with_items: "{{ vnc_users }}"
+  
+- name: systemctl enable
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}
+  with_items: "{{ vnc_users }}"
+  
+- name: systemctl start 
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}
+  with_items: "{{ vnc_users }}"
+  

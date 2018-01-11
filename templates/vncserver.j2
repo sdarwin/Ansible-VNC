@@ -1,0 +1,13 @@
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PAMName=login
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill :{{ item.item.vnc_num }} > /dev/null 2>&1 || :'
+ExecStart=/usr/bin/vncserver :{{ item.item.vnc_num }} {{ vnc_client_options }} {{ vnc_client_options_per_user | default() }}
+ExecStop=/usr/bin/vncserver -kill :{{ item.item.vnc_num }}
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,40 @@
+---
+- name: checking existence of per-user basic scripts to start vnc
+  stat:
+    path: "/home/{{ item.username }}/vncstart.sh"
+  register: checkvncstart
+  with_items: "{{ vnc_users }}"
+    
+- name: Update per-user basic scripts to start vnc
+  template:
+    src: vncstart.sh.j2
+    dest: "/home/{{ item.item.username }}/vncstart.sh"
+    mode: 0755
+    owner: "{{ item.item.username }}"
+    group: "{{ item.item.username }}"
+  when:
+    - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
+  with_items: "{{ checkvncstart.results }}"
+  
+- name: checking existence of per-user basic scripts to stop vnc
+  stat:
+    path: "/home/{{ item.username }}/vncstop.sh"
+  register: checkvncstop
+  with_items: "{{ vnc_users }}"
+    
+- name: Update per-user basic scripts to stop vnc
+  template:
+    src: vncstop.sh.j2
+    dest: "/home/{{ item.item.username }}/vncstop.sh"
+    mode: 0755
+    owner: "{{ item.item.username }}"
+    group: "{{ item.item.username }}"
+  when:
+    - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
+  with_items: "{{ checkstopvnc.results }}"
+ 
+- name: start vnc for each user
+  shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}
+  with_items: "{{ vnc_users }}"
+  ignore_errors: yes
+ 

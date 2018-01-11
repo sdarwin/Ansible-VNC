@@ -1,0 +1,23 @@
+---
+default_vnc_users:
+  - username: 'admin'
+    #port 5901 is 1
+    vnc_num: 1
+    vnc_default_password: mypassword
+default_vnc_desktop_packages:
+  gnome:
+    - gnome
+    - task-desktop
+    - gnome-panel 
+    - gnome-settings-daemon 
+    - metacity 
+    - nautilus 
+    - gnome-terminal 
+    - xterm
+  xfce4:
+    - xfce4
+    - gnome-icon-theme
+    - gnome-terminal
+    - firefox-esr
+    - xterm
+ 
