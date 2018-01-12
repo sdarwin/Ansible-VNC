@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: create ubuntu
+      user: 
+        name: ubuntu
+      when: ansible_distribution == 'Ubuntu'
+    - name: create admin
+      user:
+        name: admin
+      when: ansible_distribution == 'Debian'
+    - name: create centos
+      user:
+        name: centos
+      when: ansible_distribution == 'CentOS'
+    - name: debug info
+      debug:
+        msg: "desktop is {{ vnc_desktop }}"
+    - name: debug info 2
+      debug:
+        msg: "server is {{ vnc_server }}"

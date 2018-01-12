@@ -27,6 +27,7 @@ default_vnc_server_packages:
   tigervnc:
     - libtasn1-bin
     - libtasn1-3-bin
+    - tigervnc-standalone-server
   vnc4server:
     - vnc4server
   tightvnc:

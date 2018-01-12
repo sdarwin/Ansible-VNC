@@ -31,7 +31,7 @@
     group: "{{ item.item.username }}"
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
-  with_items: "{{ checkstopvnc.results }}"
+  with_items: "{{ checkvncstop.results }}"
  
 - name: start vnc for each user
   shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}

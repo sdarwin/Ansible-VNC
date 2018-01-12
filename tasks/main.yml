@@ -17,6 +17,10 @@
    
 ##########
     
+- name: debug info
+  debug:
+    msg: "desktop is {{ vnc_desktop }} and server is {{ vnc_server }}"
+
 - name: fix test-kitchen
   file:
     path: /tmp/kitchen

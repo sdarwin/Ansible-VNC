@@ -3,4 +3,4 @@
   become: true
   gather_facts: yes
   roles:
-    - sdarwin.vnc
+    - sdarwin.VNC

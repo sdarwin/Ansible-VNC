@@ -52,6 +52,9 @@ provisioner:
   require_chef_for_busser: false
   #ansible_connection: winrm
   #require_windows_support: true
+  #extra_vars:
+  #  vnc_desktop: gnome
+  #  vnc_server: tigervnc
 
 suites:
  - name: default
