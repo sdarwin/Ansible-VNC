@@ -156,9 +156,9 @@
   with_items: "{{ vnc_users }}"  
    
 - name: include systemd auto-start services
-  include_tasks: systemd.yml 
+  include: systemd.yml 
   when: vnc_install_systemd_services == True
   
 - name: include basic shell scripts to start services
-  include_tasks: nonsystemd.yml 
+  include: nonsystemd.yml 
   when: vnc_install_systemd_services == False
