@@ -32,6 +32,16 @@
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
   with_items: "{{ checkvncstop.results }}"
+
+#Nautilus error. Unable to create a required folder.
+- name: create .config directories.
+  file:
+    path: "/home/{{ item.username }}/.config"
+    state: directory
+    mode: 0700
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+  with_items: "{{ vnc_users }}"
  
 - name: start vnc for each user
   shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}

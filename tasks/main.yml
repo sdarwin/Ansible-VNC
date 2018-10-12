@@ -11,7 +11,7 @@
 - name: set facts based on defaults
   set_fact:
     "{{ item[8:] }}": "{{  vars[item[8:]] | default(vars[item]) }}"
-  when: item | match("^default_")
+  when: item is match("^default_")
   with_items:
     "{{ vars }}"
    
@@ -34,14 +34,14 @@
     state: present
     update_cache: yes
   when: 
-    - ansible_distribution_version | version_compare('17.10', '==') 
+    - ansible_distribution_version is version_compare('17.10', '==') 
 
 - name: fix Ubuntu 17.10 bug, 2
   service:
     name: NetworkManager
     state: started
   when: 
-    - ansible_distribution_version | version_compare('17.10', '==') 
+    - ansible_distribution_version is version_compare('17.10', '==') 
 
 - name: install general packages
   package:
