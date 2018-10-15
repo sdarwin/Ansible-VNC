@@ -3,13 +3,14 @@ galaxy_info:
   author: sdarwin
   description: VNC Installer
   license: GPLv2
-  min_ansible_version: 2.2
+  min_ansible_version: 2.4
   platforms:
   - name: EL
     versions:
     - 7
   - name: Ubuntu
     versions:
+    - bionic
     - xenial
     - zesty
   - name: Debian
