@@ -1,6 +1,6 @@
 ---
 
-default_vnc_server: vnc4server
+default_vnc_server: tigervnc
 
 default_vnc_users:
   - username: 'ubuntu'

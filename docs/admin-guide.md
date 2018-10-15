@@ -29,13 +29,9 @@ FACTOIDS
 
 - Combinations of things that don't work.
   - The systemd per-user strategy doesn't work with RedHat, because RedHat has disabled systemctl --user. Thefore, only use the standard ~/vncstart.sh method.
-  - The xstartup file doesn't start Gnome-Terminal with the particular combination of Ubuntu17/Tiger/Gnome. Possible solutions:
-    - remove xstartup file, or
-	- switch to vnc4server , or
-	- construct a different xstartup file, or  
-	- wait for the release of Ubuntu 18. Review everything again at that time.   
-	The current solution is setting vnc_server to vnc4server for Ubuntu17. So, it's working now.
-	
+  - The xstartup file doesn't start Gnome-Terminal with the particular combination of Ubuntu17/Tiger/Gnome. Possible solutions include removing or modifying the xstartup file. vnc4server works.
+  - Ubuntu18/Tiger/Xfce4 was ok. However, Ubuntu18/Xfce4 with other vnc servers (Ubuntu18/tightvnc/Xfce4 Ubuntu18/vnc4server/Xfce4) was missing desktop icons at times during testing.  
+  
 - Debian 9 vnc4server seems to depend on tigervnc-common tigervnc-standalone-server. In other words, you will get Tiger, whether you like it or not, for Debian.
 
 - Debian 9 with Tiger will only listen on localhost, out of the box. Since that is advisable, it is not currently being changed.

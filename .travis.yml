@@ -21,21 +21,25 @@ env:
   - distro=centos7 init=/usr/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
   - distro=debian9 init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
   - distro=xenial init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
+  - distro=bionic init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
   #- distro=zesty init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
   - distro=artful init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=tigervnc playbook=test.yml
   - distro=centos7 init=/usr/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
   - distro=debian9 init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
   - distro=xenial init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
+  - distro=bionic init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
   #- distro=zesty init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
   - distro=artful init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=tigervnc playbook=test.yml
   #centos does not support vnc4server
   #- distro=centos7 init=/usr/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" playbook=test.yml
   - distro=debian9 init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=vnc4server playbook=test.yml
   - distro=xenial init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=vnc4server playbook=test.yml
+  - distro=bionic init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=vnc4server playbook=test.yml
   #- distro=zesty init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=vnc4server playbook=test.yml
   - distro=artful init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=gnome vnc_server=vnc4server playbook=test.yml
   - distro=debian9 init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=vnc4server playbook=test.yml
   - distro=xenial init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=vnc4server playbook=test.yml
+  - distro=bionic init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=vnc4server playbook=test.yml
   #- distro=zesty init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=vnc4server playbook=test.yml
   - distro=artful init=/lib/systemd/systemd run_opts="--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro" vnc_desktop=xfce4 vnc_server=vnc4server playbook=test.yml
 script:
