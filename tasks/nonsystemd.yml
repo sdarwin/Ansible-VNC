@@ -4,7 +4,7 @@
     path: "/home/{{ item.username }}/vncstart.sh"
   register: checkvncstart
   with_items: "{{ vnc_users }}"
-    
+
 - name: Update per-user basic scripts to start vnc
   template:
     src: vncstart.sh.j2
@@ -13,15 +13,15 @@
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
-    - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
+    - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checkvncstart.results }}"
-  
+
 - name: checking existence of per-user basic scripts to stop vnc
   stat:
     path: "/home/{{ item.username }}/vncstop.sh"
   register: checkvncstop
   with_items: "{{ vnc_users }}"
-    
+
 - name: Update per-user basic scripts to stop vnc
   template:
     src: vncstop.sh.j2
@@ -30,7 +30,7 @@
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
-    - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
+    - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checkvncstop.results }}"
 
 #Nautilus error. Unable to create a required folder.
@@ -42,9 +42,8 @@
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
- 
+
 - name: start vnc for each user
-  shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}
+  shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }} # noqa 301 305
   with_items: "{{ vnc_users }}"
   ignore_errors: yes
- 

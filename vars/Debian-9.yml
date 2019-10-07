@@ -21,4 +21,3 @@ default_vnc_desktop_packages:
     - gnome-terminal
     - firefox-esr
     - xterm
-

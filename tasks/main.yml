@@ -1,5 +1,4 @@
 ---
-
 # Include Variables ##########
 
 - name: Include OS-specific variables.
@@ -81,7 +80,7 @@
     - ansible_distribution_major_version == "16"
 
 - name: install tigervnc
-  shell: apt install "/opt/downloads/{{ vnc_tiger_file }}"
+  shell: apt install "/opt/downloads/{{ vnc_tiger_file }}" # noqa 305
   when:
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
@@ -110,7 +109,7 @@
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
-    - vnc_ansible_managed_xstartup == True or item.stat.exists == False
+    - vnc_ansible_managed_xstartup or not item.stat.exists
   with_items: "{{ checkxstartup.results }}"
 
 #the file .dmrc is currently for Redhat/Centos
@@ -128,22 +127,28 @@
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
-    - vnc_ansible_managed_xstartup == True or item.stat.exists == False
+    - vnc_ansible_managed_xstartup or not item.stat.exists
   with_items: "{{ checkdmrc.results }}"
 
 - name: Set vnc passwords tightvnc
-  shell: echo {{ item.vnc_default_password }} | vncpasswd -f > /home/{{ item.username }}/.vnc/passwd
+  shell: |
+    set -o pipefail
+    echo {{ item.vnc_default_password }} | vncpasswd -f > /home/{{ item.username }}/.vnc/passwd
   args:
     chdir: "/home/{{ item.username }}/.vnc"
     creates: "/home/{{ item.username }}/.vnc/passwd"
+    executable: /bin/bash
   with_items: "{{ vnc_users }}"
   when: vnc_server == "tightvnc"
 
 - name: Set vnc passwords vnc4server, tigervnc
-  shell: printf "{{ item.vnc_default_password }}\n{{ item.vnc_default_password }}\n\n" | vncpasswd /home/{{ item.username }}/.vnc/passwd
+  shell: |
+    set -o pipefail
+    printf "{{ item.vnc_default_password }}\n{{ item.vnc_default_password }}\n\n" | vncpasswd /home/{{ item.username }}/.vnc/passwd
   args:
     chdir: "/home/{{ item.username }}/.vnc"
     creates: "/home/{{ item.username }}/.vnc/passwd"
+    executable: /bin/bash
   with_items: "{{ vnc_users }}"
   when: vnc_server == "vnc4server" or vnc_server == "tigervnc"
 
@@ -157,8 +162,8 @@
 
 - name: include systemd auto-start services
   include: systemd.yml
-  when: vnc_install_systemd_services == True
+  when: vnc_install_systemd_services
 
 - name: include basic shell scripts to start services
   include: nonsystemd.yml
-  when: vnc_install_systemd_services == False
+  when: not vnc_install_systemd_services

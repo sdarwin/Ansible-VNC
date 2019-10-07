@@ -1,5 +1,4 @@
 ---
-
 default_vnc_server: tigervnc
 
 default_vnc_general_packages:

@@ -8,11 +8,11 @@
     - " "
     - "***********************"
   when:
-    - vnc_reboot_once is not defined or vnc_reboot_once == False
+    - vnc_reboot_once is not defined or not vnc_reboot_once
 
 - name: reboot once
-  shell: reboot
+  shell: reboot # noqa 305
   args:
     chdir: /
   when:
-    - vnc_reboot_once is defined and vnc_reboot_once == True
+    - vnc_reboot_once is defined and vnc_reboot_once
