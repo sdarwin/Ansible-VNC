@@ -58,7 +58,7 @@ script:
   
   # Test role.
   - printf "starting main exec"
-  - 'docker exec "$(cat ${container_id})" env TERM=xterm env ANSIBLE_FORCE_COLOR=1 ansible-playbook -vvv -e vnc_desktop=${vnc_desktop} -e vnc_server=${vnc_server} /etc/ansible/roles/role_under_test/tests/${playbook}'
+  - 'travis_wait 30 docker exec "$(cat ${container_id})" env TERM=xterm env ANSIBLE_FORCE_COLOR=1 ansible-playbook -vvv -e vnc_desktop=${vnc_desktop} -e vnc_server=${vnc_server} /etc/ansible/roles/role_under_test/tests/${playbook}'
   - printf "finished main exec"
 
   # Check if vnc is running
