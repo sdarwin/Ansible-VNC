@@ -2,10 +2,11 @@
 ### Ansible VNC User's Guide
 
 It is helpful to understand that VNC has Desktop numbers and TCP/IP port numbers which exactly correspond, as in the following list.
-Port 5901, Desktop :1
-Port 5902, Desktop :2
-Port 5903, Desktop :3
-Port 5904, Desktop :4
+
+- Port 5901, Desktop :1
+- Port 5902, Desktop :2
+- Port 5903, Desktop :3
+- Port 5904, Desktop :4
 
 For example, your account may be assigned "Port 5901, Desktop :1". What that means, is when connecting with a VNC Viewer, you will use TCP/IP port 5901. At the same time, when running server-side script commands the necessary syntax will be :1, not 5901. So, it just depends on the context, which of those two numbers to use.
 
