@@ -9,16 +9,16 @@ driver:
   instance_type: t2.xlarge
 
 transport:
-  ssh_key: C:\amaz\testkitchen.pem
+  ssh_key: /root/.ssh/testkitchen.pem
   connection_timeout: 10
   connection_retries: 5
 
 platforms:
-- name: ubuntu-18.04
-  driver:
-    image_id: ami-0427e8367e3770df1
-  transport:
-    username: ubuntu
+#- name: ubuntu-18.04
+#  driver:
+#    image_id: ami-0427e8367e3770df1
+#  transport:
+#    username: ubuntu
 # - name: ubuntu-16.04
   # driver:
     # image_id: ami-018b3065
@@ -34,6 +34,11 @@ platforms:
     # image_id: ami-02b20966
   # transport:
     # username: ubuntu
+ - name: debian-10
+   driver:
+     image_id: ami-037099906a22f210f
+   transport:
+     username: admin
 # - name: debian-9.3
   # driver:
     # image_id: ami-1545ff71
@@ -74,6 +79,17 @@ suites:
     extra_vars:
       vnc_desktop: xfce4
       vnc_server: tigervnc
+      default_vnc_users:
+        - username: 'admin'
+          #usergroup: 'admin'
+          #port 5901 is 1
+          vnc_num: 1
+          vnc_default_password: mypassword
+        - username: 'john'
+          #port 5902 is 2
+          vnc_num: 2
+          vnc_default_password: mypassword
+          #vnc_client_options_per_user: "-localhost"
 # - name: tightvnc-gnome
   # attributes:
     # extra_vars:
