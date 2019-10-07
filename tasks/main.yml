@@ -14,9 +14,9 @@
   when: item is match("^default_")
   with_items:
     "{{ vars }}"
-   
+
 ##########
-    
+
 - name: debug info
   debug:
     msg: "desktop is {{ vnc_desktop }} and server is {{ vnc_server }}"
@@ -29,19 +29,19 @@
     mode: 0775
 
 - name: fix Ubuntu 17.10 bug, 1
-  package: 
+  package:
     name: network-manager
     state: present
     update_cache: yes
-  when: 
-    - ansible_distribution_version is version_compare('17.10', '==') 
+  when:
+    - ansible_distribution_version is version_compare('17.10', '==')
 
 - name: fix Ubuntu 17.10 bug, 2
   service:
     name: NetworkManager
     state: started
-  when: 
-    - ansible_distribution_version is version_compare('17.10', '==') 
+  when:
+    - ansible_distribution_version is version_compare('17.10', '==')
 
 - name: install general packages
   package:
@@ -49,14 +49,14 @@
     state: present
     update_cache: yes
   with_items: "{{ vnc_general_packages }}"
-  
+
 - name: install desktop packages
   package:
     name: "{{ item }}"
     state: present
     update_cache: yes
   with_items: "{{ vnc_desktop_packages[vnc_desktop] }}"
-  
+
 - name: install vnc_server packages
   package:
     name: "{{ item }}"
@@ -75,58 +75,58 @@
   get_url:
     url: "{{ vnc_tiger_url }}"
     dest: "/opt/downloads"
-  when: 
-    - ansible_distribution == "Ubuntu" 
-    - vnc_server == "tigervnc" 
+  when:
+    - ansible_distribution == "Ubuntu"
+    - vnc_server == "tigervnc"
     - ansible_distribution_major_version == "16"
-  
+
 - name: install tigervnc
   shell: apt install "/opt/downloads/{{ vnc_tiger_file }}"
   when:
-    - ansible_distribution == "Ubuntu" 
-    - vnc_server == "tigervnc" 
+    - ansible_distribution == "Ubuntu"
+    - vnc_server == "tigervnc"
     - ansible_distribution_major_version == "16"
-  
+
 - name: Create .vnc dirs
   file:
     path: "/home/{{ item.username }}/.vnc"
     state: directory
     mode: 0755
     owner: "{{ item.username }}"
-    group: "{{ item.username }}"
+    group: "{{ item.usergroup }}"
   with_items: "{{ vnc_users }}"
-  
+
 - name: checking existence of xstartup files
   stat:
     path: "/home/{{ item.username }}/.vnc/xstartup"
   register: checkxstartup
   with_items: "{{ vnc_users }}"
-    
+
 - name: Update "xstartup" file
   template:
     src: xstartup.j2
     dest: "/home/{{ item.item.username }}/.vnc/xstartup"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.username }}"
+    group: "{{ item.item.usergroup }}"
   when:
     - vnc_ansible_managed_xstartup == True or item.stat.exists == False
   with_items: "{{ checkxstartup.results }}"
-  
+
 #the file .dmrc is currently for Redhat/Centos
 - name: checking existence of .dmrc files
   stat:
     path: "/home/{{ item.username }}/.dmrc"
   register: checkdmrc
   with_items: "{{ vnc_users }}"
-    
+
 - name: Update .dmrc file
   template:
     src: dmrc.j2
     dest: "/home/{{ item.item.username }}/.dmrc"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.username }}"
+    group: "{{ item.item.usergroup }}"
   when:
     - vnc_ansible_managed_xstartup == True or item.stat.exists == False
   with_items: "{{ checkdmrc.results }}"
@@ -138,7 +138,7 @@
     creates: "/home/{{ item.username }}/.vnc/passwd"
   with_items: "{{ vnc_users }}"
   when: vnc_server == "tightvnc"
-  
+
 - name: Set vnc passwords vnc4server, tigervnc
   shell: printf "{{ item.vnc_default_password }}\n{{ item.vnc_default_password }}\n\n" | vncpasswd /home/{{ item.username }}/.vnc/passwd
   args:
@@ -146,19 +146,19 @@
     creates: "/home/{{ item.username }}/.vnc/passwd"
   with_items: "{{ vnc_users }}"
   when: vnc_server == "vnc4server" or vnc_server == "tigervnc"
-    
+
 - name: Set perms on vnc passwords
   file:
     path: "/home/{{ item.username }}/.vnc/passwd"
     owner: "{{ item.username }}"
-    group: "{{ item.username }}"
+    group: "{{ item.usergroup }}"
     mode: 0700
-  with_items: "{{ vnc_users }}"  
-   
+  with_items: "{{ vnc_users }}"
+
 - name: include systemd auto-start services
-  include: systemd.yml 
+  include: systemd.yml
   when: vnc_install_systemd_services == True
-  
+
 - name: include basic shell scripts to start services
-  include: nonsystemd.yml 
+  include: nonsystemd.yml
   when: vnc_install_systemd_services == False

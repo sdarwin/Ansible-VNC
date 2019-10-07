@@ -1,16 +1,14 @@
 ---
-
-default_vnc_server: vnc4server
-
 default_vnc_users:
-  - username: 'ubuntu'
-    usergroup: 'ubuntu'
+  - username: 'admin'
+    usergroup: 'admin'
     #port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
 default_vnc_desktop_packages:
   gnome:
-    - ubuntu-desktop
+    - gnome
+    - task-desktop
     - gnome-panel
     - gnome-settings-daemon
     - metacity
@@ -21,13 +19,13 @@ default_vnc_desktop_packages:
     - xfce4
     - gnome-icon-theme
     - gnome-terminal
-    - firefox
+    - firefox-esr
     - xterm
 
 default_vnc_server_packages:
   tigervnc:
     - libtasn1-bin
-    - libtasn1-3-bin
+    - libtasn1-6
     - tigervnc-standalone-server
   vnc4server:
     - vnc4server

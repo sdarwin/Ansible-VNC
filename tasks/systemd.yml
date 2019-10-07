@@ -9,7 +9,7 @@
   args:
     chdir: /etc/ansible
     creates: /etc/ansible/rebooted-once.txt
-  notify: 
+  notify:
     - reboot once
     - reboot message
 
@@ -23,35 +23,35 @@
     state: directory
     mode: 0755
     owner: "{{ item.username }}"
-    group: "{{ item.username }}"
+    group: "{{ item.usergroup }}"
   with_items: "{{ vnc_users }}"
-  
+
 - name: checking existence of per-user systemd service files
   stat:
     path: "/home/{{ item.username }}/.config/systemd/user/vncserver.service"
   register: checksystemd
   with_items: "{{ vnc_users }}"
-    
+
 - name: Update per-user systemd service files
   template:
     src: vncserver.j2
     dest: "/home/{{ item.item.username }}/.config/systemd/user/vncserver.service"
     mode: 0644
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.username }}"
+    group: "{{ item.item.usergroup }}"
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
   with_items: "{{ checksystemd.results }}"
-  
-- name: systemctl daemon-reload 
+
+- name: systemctl daemon-reload
   shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}
   with_items: "{{ vnc_users }}"
-  
+
 - name: systemctl enable
   shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}
   with_items: "{{ vnc_users }}"
-  
-- name: systemctl start 
+
+- name: systemctl start
   shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}
   with_items: "{{ vnc_users }}"
-  
+
