@@ -4,17 +4,18 @@ default_vnc_server: tigervnc
 
 default_vnc_users:
   - username: 'ubuntu'
+    usergroup: 'ubuntu'
     #port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
 default_vnc_desktop_packages:
   gnome:
     - ubuntu-desktop
-    - gnome-panel 
-    - gnome-settings-daemon 
-    - metacity 
-    - nautilus 
-    - gnome-terminal 
+    - gnome-panel
+    - gnome-settings-daemon
+    - metacity
+    - nautilus
+    - gnome-terminal
     - xterm
   xfce4:
     - xfce4
@@ -22,7 +23,7 @@ default_vnc_desktop_packages:
     - gnome-terminal
     - firefox
     - xterm
-  
+
 default_vnc_server_packages:
   tigervnc:
     - libtasn1-bin
@@ -31,4 +32,4 @@ default_vnc_server_packages:
   vnc4server:
     - vnc4server
   tightvnc:
-    - tightvncserver  
+    - tightvncserver
