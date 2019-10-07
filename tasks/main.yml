@@ -93,7 +93,7 @@
     state: directory
     mode: 0755
     owner: "{{ item.username }}"
-    group: "{{ item.usergroup }}"
+    group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
 - name: checking existence of xstartup files
@@ -108,7 +108,7 @@
     dest: "/home/{{ item.item.username }}/.vnc/xstartup"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.usergroup }}"
+    group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_xstartup == True or item.stat.exists == False
   with_items: "{{ checkxstartup.results }}"
@@ -126,7 +126,7 @@
     dest: "/home/{{ item.item.username }}/.dmrc"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.usergroup }}"
+    group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_xstartup == True or item.stat.exists == False
   with_items: "{{ checkdmrc.results }}"
@@ -151,7 +151,7 @@
   file:
     path: "/home/{{ item.username }}/.vnc/passwd"
     owner: "{{ item.username }}"
-    group: "{{ item.usergroup }}"
+    group: "{{ item.usergroup | default(item.username) }}"
     mode: 0700
   with_items: "{{ vnc_users }}"
 

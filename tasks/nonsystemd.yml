@@ -11,7 +11,7 @@
     dest: "/home/{{ item.item.username }}/vncstart.sh"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.username }}"
+    group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
   with_items: "{{ checkvncstart.results }}"
@@ -28,7 +28,7 @@
     dest: "/home/{{ item.item.username }}/vncstop.sh"
     mode: 0755
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.username }}"
+    group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
   with_items: "{{ checkvncstop.results }}"
@@ -40,7 +40,7 @@
     state: directory
     mode: 0700
     owner: "{{ item.username }}"
-    group: "{{ item.username }}"
+    group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
  
 - name: start vnc for each user

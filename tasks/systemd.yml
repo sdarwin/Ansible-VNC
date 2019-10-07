@@ -23,7 +23,7 @@
     state: directory
     mode: 0755
     owner: "{{ item.username }}"
-    group: "{{ item.usergroup }}"
+    group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
 - name: checking existence of per-user systemd service files
@@ -38,7 +38,7 @@
     dest: "/home/{{ item.item.username }}/.config/systemd/user/vncserver.service"
     mode: 0644
     owner: "{{ item.item.username }}"
-    group: "{{ item.item.usergroup }}"
+    group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_startup_scripts == True or item.stat.exists == False
   with_items: "{{ checksystemd.results }}"

@@ -4,28 +4,24 @@
 
 #vnc_users:
 #  - username: 'ubuntu'
-#    usergroup: 'ubuntu'
+#    usergroup: 'ubuntu'     # usergroup is optional. Defaults to username.
 #    #port 5901 is 1
 #    vnc_num: 1
 #    vnc_default_password: mypassword
 #  - username: 'john'
-#    usergroup: 'john'
 #    #port 5902 is 2
 #    vnc_num: 2
 #    vnc_default_password: mypassword
 #    vnc_client_options_per_user: "-localhost"
 #  - username: 'paul'
-#    usergroup: 'paul'
 #    #port 5903 is 3
 #    vnc_num: 3
 #    vnc_default_password: mypassword
 #  - username: 'george'
-#    usergroup: 'george'
 #    #port 5904 is 4
 #    vnc_num: 4
 #    vnc_default_password: mypassword
 #  - username: 'ringo'
-#    usergroup: 'ringo'
 #    #port 5905 is 5
 #    vnc_num: 5
 #    vnc_default_password: mypassword
