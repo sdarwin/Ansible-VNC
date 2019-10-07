@@ -1,5 +1,5 @@
 
-### Ansible VNC User's Guide - SystemD Version
+# Ansible VNC User's Guide - SystemD Version
 
 It is helpful to understand that VNC has Desktop numbers and TCP/IP port numbers which exactly correspond, as in the following list.
 
@@ -31,17 +31,25 @@ vncpasswd
 This document assumes your Administrator has installed VNC as a per-user systemd service.
 
 To manually start the service if it's not running:
+```
 systemctl --user start vncserver
+```
 
 To stop the service:
+```
 systemctl --user stop vncserver
+```
 
 To check the status of the service:
+```
 systemctl --user status vncserver
+```
 
 If you would like to customize VNC parameters, the files to modify are
 ~/.vnc/xstartup and ~/.config/systemd/user/vncserver.service
 After modifying the files you should run
+```
 systemctl --user stop vncserver
 systemctl --user daemon-reload
 systemctl --user start vncserver
+```

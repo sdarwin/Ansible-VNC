@@ -20,9 +20,9 @@ ansible-playbook default.yml
 
 Copy the contents of defaults/main.yml to your local groups_vars/all and modify as necessary. Review each variable carefully. This serves as the "config file", so by customizing the default variables you adjust the installation. At minimum, the vnc_users variable in that file should likely be set for your particular environment. The other settings are optional.
 
-Review the documentation included in this repo:
-docs/admin-guide.md
-docs/users-guide.md
+Review the documentation included in this repo:<br/>
+docs/admin-guide.md<br/>
+docs/users-guide.md<br/>
 docs/users-guide-systemd.md
 
 ## License

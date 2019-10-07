@@ -1,4 +1,4 @@
-### Admin Guide
+# Admin Guide
 
 Firstly, refer to the files users-guide.md and users-guide-systemd.md in this same directory for information about how to use VNC along with this Ansible role.
 
