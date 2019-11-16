@@ -3,7 +3,9 @@
 #{{ ansible_managed }}
 {% endif %}
 
+{% if vnc_desktop == "gnome" %}
 export XKL_XMODMAP_DISABLE=1
+{% endif %}
 unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 
