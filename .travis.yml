@@ -47,6 +47,9 @@ script:
   # Run container in detached state.
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} sdarwin/$distro-ansible:latest "${init}" > "${container_id}"'
 
+  # upgrade pip
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pip --upgrade'
+
   # upgrade ansible
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible --upgrade'
   
