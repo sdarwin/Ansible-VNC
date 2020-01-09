@@ -40,6 +40,9 @@ vnc_client_options: "-geometry 1280x720 -localhost"
 ###Should the role generate and enable per-user systemd services for VNC desktops?
 vnc_install_systemd_services: False
 
+###Add the vncstart.sh script to users' .bashrc for vnc autostart when logging in? Recommended.
+vnc_bashrc_startup: True
+
 ###Ansible will create certain scripts such as ~/.config/systemd/user/vncserver.service and ~/vncstart.sh
 ###The question is should Ansible overwrite them later on? Set this to True or False.
 vnc_ansible_managed_startup_scripts: False

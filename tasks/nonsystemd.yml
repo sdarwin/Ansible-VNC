@@ -43,6 +43,14 @@
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
+- name: add vncstart.sh to .bashrc for each user 
+  lineinfile:
+    path: "/home/{{ item.username }}/.bashrc"
+    line: /home/{{ item.username }}/vncstart.sh 2> /dev/null
+  when:
+    - vnc_bashrc_startup 
+  with_items: "{{ vnc_users }}"
+
 - name: start vnc for each user
   shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }} # noqa 301 305
   with_items: "{{ vnc_users }}"
