@@ -38,7 +38,8 @@ then
   fi
   if [[ -f /bin/yum ]]
   then
-    sudo yum install -y epel-release
+    . /etc/os-release
+    sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${VERSION_ID:0:1}.noarch.rpm
     sudo yum install -y python3-pip
     sudo pip3 install ansible
   fi
