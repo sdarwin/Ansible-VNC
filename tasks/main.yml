@@ -42,6 +42,13 @@
   when:
     - ansible_distribution_version is version_compare('17.10', '==')
 
+- name: add customization for xfce4 RH
+  include: xfce-rh.yml
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version == "8"
+    - vnc_desktop == "xfce4"
+
 - name: install general packages
   package:
     name: "{{ item }}"
