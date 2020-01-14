@@ -1,6 +1,5 @@
 ---
 ###You should configure vnc_users for your list of users. Give each a different vnc_num.
-
 #vnc_users:
 #  - username: 'ubuntu'
 #    usergroup: 'ubuntu'     # usergroup is optional. Defaults to username.

@@ -2,21 +2,20 @@
 default_vnc_server: tigervnc
 
 default_vnc_general_packages:
+  - epel-release
   - htop
   - nload
-  - epel-release
   - net-tools
-  
+
 default_vnc_desktop_packages:
   gnome:
     - "@^Server with GUI"
-    - htop
     #- gnome-desktop
-    #- gnome-panel 
-    - gnome-settings-daemon 
-    - metacity 
-    - nautilus 
-    - gnome-terminal 
+    #- gnome-panel
+    - gnome-settings-daemon
+    - metacity
+    - nautilus
+    - gnome-terminal
     - xterm
   xfce4:
     - "@Xfce"
