@@ -9,8 +9,8 @@
   args:
     warn: false
   shell:
-    cmd: dnf config-manager --set-enabled PowerTools
-  when: 
+    cmd: dnf config-manager --set-enabled PowerTools # noqa 305
+  when:
     - ansible_distribution == "CentOS"
 
 - name: install sauronlenoir repo
