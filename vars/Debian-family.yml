@@ -38,3 +38,5 @@ default_vnc_tiger_file: "tigervncserver_1.8.0-1ubuntu1_amd64.deb"
 
 default_vnc_install_systemd_services: True
 default_vnc_ansible_managed_startup_scripts: False
+
+default_xstartup_additional_command1: ""

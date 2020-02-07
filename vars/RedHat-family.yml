@@ -36,3 +36,5 @@ default_vnc_server_packages:
 default_vnc_install_systemd_services: False
 
 default_vnc_ansible_managed_startup_scripts: False
+
+default_xstartup_additional_command1: ""
