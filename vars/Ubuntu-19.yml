@@ -34,4 +34,3 @@ default_vnc_server_packages:
     - tightvncserver
 
 default_xstartup_additional_command1: "dbus-update-activation-environment --systemd --all"
-
