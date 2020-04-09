@@ -25,6 +25,16 @@ docs/admin-guide.md<br/>
 docs/users-guide.md<br/>
 docs/users-guide-systemd.md
 
+## Quickstart
+
+Most of the instructions assume a standard Ansible infrastructure.
+
+However, if you have just launched a single new remote test server, and would like to very quickly install VNC without much setup or configuration:
+
+```
+curl -sL https://raw.githubusercontent.com/sdarwin/Ansible-VNC/master/scripts/quickinstall.sh | sudo bash
+```
+
 ## License
 
 GPLv2
