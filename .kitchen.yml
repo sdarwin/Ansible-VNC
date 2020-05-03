@@ -14,6 +14,11 @@ transport:
   connection_retries: 5
 
 platforms:
+  - name: ubuntu-20.04
+    driver:
+      image_id: ami-08a6203f59f9df866
+    transport:
+      username: ubuntu
 #- name: ubuntu-18.04
 #  driver:
 #    image_id: ami-0427e8367e3770df1
@@ -34,11 +39,11 @@ platforms:
     # image_id: ami-02b20966
   # transport:
     # username: ubuntu
- - name: debian-10
-   driver:
-     image_id: ami-037099906a22f210f
-   transport:
-     username: admin
+# - name: debian-10
+#   driver:
+#     image_id: ami-037099906a22f210f
+#   transport:
+#     username: admin
 # - name: debian-9.3
   # driver:
     # image_id: ami-1545ff71
