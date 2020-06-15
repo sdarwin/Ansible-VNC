@@ -1,55 +1,55 @@
 ---
-###You should configure vnc_users for your list of users. Give each a different vnc_num.
-#vnc_users:
-#  - username: 'ubuntu'
-#    usergroup: 'ubuntu'     # usergroup is optional. Defaults to username.
-#    #port 5901 is 1
-#    vnc_num: 1
-#    vnc_default_password: mypassword
-#  - username: 'john'
-#    #port 5902 is 2
-#    vnc_num: 2
-#    vnc_default_password: mypassword
-#    vnc_client_options_per_user: "-localhost"
-#  - username: 'paul'
-#    #port 5903 is 3
-#    vnc_num: 3
-#    vnc_default_password: mypassword
-#  - username: 'george'
-#    #port 5904 is 4
-#    vnc_num: 4
-#    vnc_default_password: mypassword
-#  - username: 'ringo'
-#    #port 5905 is 5
-#    vnc_num: 5
-#    vnc_default_password: mypassword
+### You should configure vnc_users for your list of users. Give each a different vnc_num.
+# vnc_users:
+#   - username: 'ubuntu'
+#     usergroup: 'ubuntu'     # usergroup is optional. Defaults to username.
+#     #port 5901 is 1
+#     vnc_num: 1
+#     vnc_default_password: mypassword
+#   - username: 'john'
+#     #port 5902 is 2
+#     vnc_num: 2
+#     vnc_default_password: mypassword
+#     vnc_client_options_per_user: "-localhost"
+#   - username: 'paul'
+#     #port 5903 is 3
+#     vnc_num: 3
+#     vnc_default_password: mypassword
+#   - username: 'george'
+#     #port 5904 is 4
+#     vnc_num: 4
+#     vnc_default_password: mypassword
+#   - username: 'ringo'
+#     #port 5905 is 5
+#     vnc_num: 5
+#     vnc_default_password: mypassword
 
-###Choices are "gnome" and "xfce4"
+### Choices are "gnome" and "xfce4"
 vnc_desktop: gnome
-#vnc_desktop: xfce4
+# vnc_desktop: xfce4
 
-###Choices of vnc_server for Ubuntu/Debian are currently "tigervnc", "vnc4server" and "tightvnc".
-###For Redhat/CentOS, only "tigervnc".
-###Some default choices have already been set in the vars/ folder
+### Choices of vnc_server for Ubuntu/Debian are currently "tigervnc", "vnc4server" and "tightvnc".
+### For Redhat/CentOS, only "tigervnc".
+### Some default choices have already been set in the vars/ folder
 
-#vnc_server: tigervnc
+# vnc_server: tigervnc
 
 vnc_client_options: "-geometry 1280x720 -localhost"
 
-###Should the role generate and enable per-user systemd services for VNC desktops?
-vnc_install_systemd_services: False
+### Should the role generate and enable per-user systemd services for VNC desktops?
+vnc_install_systemd_services: false
 
-###Add the vncstart.sh script to users' .bashrc for vnc autostart when logging in? Recommended.
-vnc_bashrc_startup: True
+### Add the vncstart.sh script to users' .bashrc for vnc autostart when logging in? Recommended.
+vnc_bashrc_startup: true
 
-###Ansible will create certain scripts such as ~/.config/systemd/user/vncserver.service and ~/vncstart.sh
-###The question is should Ansible overwrite them later on? Set this to True or False.
-vnc_ansible_managed_startup_scripts: False
+### Ansible will create certain scripts such as ~/.config/systemd/user/vncserver.service and ~/vncstart.sh
+### The question is should Ansible overwrite them later on? Set this to True or False.
+vnc_ansible_managed_startup_scripts: false
 
-###Ansible will create xstartup. The question is should Ansible overwrite xstartup files later on? Set this to True or False.
-vnc_ansible_managed_xstartup: False
+### Ansible will create xstartup. The question is should Ansible overwrite xstartup files later on? Set this to True or False.
+vnc_ansible_managed_xstartup: false
 
-###It has been discovered that an Ubuntu server, in the Cloud, ought to be rebooted at least one time in order to fix the locale settings.
-###If you set this to True, then Ansible will reboot the server. The default here is False, so you will need to reboot manually.
-###Only affects the systemd type configuration, otherwise not relevant.
-vnc_reboot_once: False
+### It has been discovered that an Ubuntu server, in the Cloud, ought to be rebooted at least one time in order to fix the locale settings.
+### If you set this to True, then Ansible will reboot the server. The default here is False, so you will need to reboot manually.
+### Only affects the systemd type configuration, otherwise not relevant.
+vnc_reboot_once: false

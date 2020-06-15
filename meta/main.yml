@@ -5,19 +5,19 @@ galaxy_info:
   license: GPLv2
   min_ansible_version: 2.4
   platforms:
-  - name: EL
-    versions:
-    - 7
-    - 8
-  - name: Ubuntu
-    versions:
-    - bionic
-    - xenial
-    - zesty
-    - focal
-  - name: Debian
-    versions:
-    - jessie
+    - name: EL
+      versions:
+        - 7
+        - 8
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+        - zesty
+        - focal
+    - name: Debian
+      versions:
+        - jessie
   galaxy_tags:
     - vnc
     - system

@@ -2,16 +2,16 @@
 - name: reboot message
   debug:
     msg:
-    - "***********************"
-    - " "
-    - "You should reboot this server {{ inventory_hostname }}, as a one-time action, if it hasn't ever been rebooted."
-    - " "
-    - "***********************"
+      - "***********************"
+      - " "
+      - "You should reboot this server {{ inventory_hostname }}, as a one-time action, if it hasn't ever been rebooted."
+      - " "
+      - "***********************"
   when:
     - vnc_reboot_once is not defined or not vnc_reboot_once
 
 - name: reboot once
-  shell: reboot # noqa 305
+  shell: reboot  # noqa 305
   args:
     chdir: /
   when:

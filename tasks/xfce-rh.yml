@@ -1,7 +1,7 @@
 ---
 
 # This is a temporary workaround from https://sauronlenoir.be/index.php/en/xxx to enable Xfce on RH family
-# 
+#
 # Because RHEL itself doesn't have the PowerTools repo, and so the gtk-doc package doesn't install, this fix only works for CentOS. Not for RedHat.
 
 - name: enable PowerTools
@@ -9,7 +9,7 @@
   args:
     warn: false
   shell:
-    cmd: dnf config-manager --set-enabled PowerTools # noqa 305
+    cmd: dnf config-manager --set-enabled PowerTools  # noqa 305
   when:
     - ansible_distribution == "CentOS"
 
@@ -17,10 +17,10 @@
   package:
     name: https://sauronlenoir.be/repo/rpm/sauronlenoir-release-1-0.el8.noarch.rpm
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: install xfce4 screensaver
   package:
     name: http://download-ib01.fedoraproject.org/pub/fedora/linux/updates/29/Everything/x86_64/Packages/x/xfce4-screensaver-0.1.4-1.fc29.x86_64.rpm
     state: present
-    update_cache: yes
+    update_cache: true

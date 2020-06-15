@@ -8,15 +8,15 @@ default_vnc_general_packages:
 default_vnc_users:
   - username: 'centos'
     usergroup: 'centos'
-    #port 5901 is 1
+    # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
 
 default_vnc_desktop_packages:
   gnome:
     - "@Server with GUI"
-    #- gnome-desktop
-    #- gnome-panel
+    # - gnome-desktop
+    # - gnome-panel
     - gnome-settings-daemon
     - metacity
     - nautilus
@@ -24,7 +24,7 @@ default_vnc_desktop_packages:
     - xterm
   xfce4:
     - "@Xfce"
-    #- gnome-icon-theme
-    #- gnome-terminal
-    #- firefox
+    # - gnome-icon-theme
+    # - gnome-terminal
+    # - firefox
     - xterm

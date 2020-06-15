@@ -5,7 +5,7 @@
     state: directory
 
 - name: Ubuntu16.04/Systemd/Cloud combination requires minimum one reboot, regardless of ansible, in order for this to work.
-  shell: touch /etc/ansible/rebooted-once.txt # noqa 305
+  shell: touch /etc/ansible/rebooted-once.txt  # noqa 305
   args:
     chdir: /etc/ansible
     creates: /etc/ansible/rebooted-once.txt
@@ -14,7 +14,7 @@
     - reboot message
 
 - name: enable persistent services per user
-  shell: /bin/loginctl enable-linger {{ item.username }} # noqa 301 305
+  shell: /bin/loginctl enable-linger {{ item.username }}  # noqa 301 305
   with_items: "{{ vnc_users }}"
 
 - name: create systemd directories
@@ -44,13 +44,13 @@
   with_items: "{{ checksystemd.results }}"
 
 - name: systemctl daemon-reload
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }} # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"
 
 - name: systemctl enable
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }} # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"
 
 - name: systemctl start
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }} # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"

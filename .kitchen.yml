@@ -3,7 +3,7 @@ driver:
   name: ec2
   region: ca-central-1
   subnet_id: subnet-99e681e2
-  security_group_ids: 
+  security_group_ids:
     - sg-24901f4c
   aws_ssh_key_id: testkitchen
   instance_type: t2.xlarge
@@ -19,99 +19,97 @@ platforms:
       image_id: ami-08a6203f59f9df866
     transport:
       username: ubuntu
-#- name: ubuntu-18.04
-#  driver:
-#    image_id: ami-0427e8367e3770df1
-#  transport:
-#    username: ubuntu
-# - name: ubuntu-16.04
-  # driver:
-    # image_id: ami-018b3065
-  # transport:
-    # username: ubuntu
+# - name: ubuntu-18.04
+#   driver:
+#     image_id: ami-0427e8367e3770df1
+#   transport:
+#     username: ubuntu
+#  - name: ubuntu-16.04
+#    driver:
+#      image_id: ami-018b3065
+#    transport:
+#      username: ubuntu
 # - name: ubuntu-17.10
-  # driver:
-    # image_id: ami-cfba02ab
-  # transport:
-    # username: ubuntu
+#   driver:
+#     image_id: ami-cfba02ab
+#   transport:
+#     username: ubuntu
 # - name: ubuntu-17.04
-  # driver:
-    # image_id: ami-02b20966
-  # transport:
-    # username: ubuntu
+#   driver:
+#     image_id: ami-02b20966
+#   transport:
+#     username: ubuntu
 # - name: debian-10
 #   driver:
 #     image_id: ami-037099906a22f210f
 #   transport:
 #     username: admin
 # - name: debian-9.3
-  # driver:
-    # image_id: ami-1545ff71
-  # transport:
-    # username: admin
+# driver:
+# image_id: ami-1545ff71
+# transport:
+# username: admin
 # - name: centos-7.4
-  # driver:
-    # image_id: ami-b111aad5
-  # transport:
-    # username: centos
+# driver:
+# image_id: ami-b111aad5
+# transport:
+# username: centos
 
 provisioner:
   name: ansible_playbook
   roles_path: ../
   hosts: test-kitchen
-  #the default setting:
-  #playbook: default.yml
+  # the default setting:
+  # playbook: default.yml
   require_ansible_repo: true
   ansible_verbose: true
   ansible_version: latest
   require_chef_for_busser: false
-  #ansible_connection: winrm
-  #require_windows_support: true
-  #extra_vars:
-  #  vnc_desktop: gnome
-  #  vnc_server: tigervnc
-
+  # ansible_connection: winrm
+  # require_windows_support: true
+  # extra_vars:
+  #   vnc_desktop: gnome
+  #   vnc_server: tigervnc
+  #
 suites:
-#- name: default
-#    gnome, vnc4server
+  - name: tigervnc-xfce4
+    attributes:
+      extra_vars:
+        vnc_desktop: xfce4
+        vnc_server: tigervnc
+        default_vnc_users:
+          - username: 'admin'
+            # usergroup: 'admin'
+            # port 5901 is 1
+            vnc_num: 1
+            vnc_default_password: mypassword
+          - username: 'john'
+            # port 5902 is 2
+            vnc_num: 2
+            vnc_default_password: mypassword
+            # vnc_client_options_per_user: "-localhost"
 # - name: tigervnc-gnome
-  # attributes:
-    # extra_vars:
-      # vnc_desktop: gnome
-      # vnc_server: tigervnc
-- name: tigervnc-xfce4
-  attributes:
-    extra_vars:
-      vnc_desktop: xfce4
-      vnc_server: tigervnc
-      default_vnc_users:
-        - username: 'admin'
-          #usergroup: 'admin'
-          #port 5901 is 1
-          vnc_num: 1
-          vnc_default_password: mypassword
-        - username: 'john'
-          #port 5902 is 2
-          vnc_num: 2
-          vnc_default_password: mypassword
-          #vnc_client_options_per_user: "-localhost"
+#   attributes:
+#     extra_vars:
+#       vnc_desktop: gnome
+#       vnc_server: tigervnc
 # - name: tightvnc-gnome
-  # attributes:
-    # extra_vars:
-      # vnc_desktop: gnome
-      # vnc_server: tightvnc
+#   attributes:
+#     extra_vars:
+#       vnc_desktop: gnome
+#       vnc_server: tightvnc
 # - name: tightvnc-xfce4
-  # attributes:
-    # extra_vars:
-      # vnc_desktop: xfce4
-      # vnc_server: tightvnc
+#   attributes:
+#     extra_vars:
+#       vnc_desktop: xfce4
+#       vnc_server: tightvnc
 # - name: vnc4server-gnome
-  # attributes:
-    # extra_vars:
-      # vnc_desktop: gnome
-      # vnc_server: vnc4server
+#   attributes:
+#     extra_vars:
+#       vnc_desktop: gnome
+#       vnc_server: vnc4server
 # - name: vnc4server-xfce4
-  # attributes:
-    # extra_vars:
-      # vnc_desktop: xfce4
-      # vnc_server: vnc4server
+#   attributes:
+#     extra_vars:
+#       vnc_desktop: xfce4
+#       vnc_server: vnc4server

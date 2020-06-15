@@ -10,8 +10,8 @@ default_vnc_general_packages:
 default_vnc_desktop_packages:
   gnome:
     - "@^Server with GUI"
-    #- gnome-desktop
-    #- gnome-panel
+    # - gnome-desktop
+    # - gnome-panel
     - gnome-settings-daemon
     - metacity
     - nautilus
@@ -19,11 +19,11 @@ default_vnc_desktop_packages:
     - xterm
   xfce4:
     - "@Xfce"
-    #- gnome-icon-theme
-    #- gnome-terminal
-    #- firefox
+    # - gnome-icon-theme
+    # - gnome-terminal
+    # - firefox
     - xterm
-    
+
 default_vnc_server_packages:
   tigervnc:
     - tigervnc-server
@@ -31,10 +31,10 @@ default_vnc_server_packages:
     - vnc4server
   tightvnc:
     - tightvncserver
-    
-#must be False for Redhat 7
-default_vnc_install_systemd_services: False
 
-default_vnc_ansible_managed_startup_scripts: False
+# must be False for Redhat 7
+default_vnc_install_systemd_services: false
+
+default_vnc_ansible_managed_startup_scripts: false
 
 default_xstartup_additional_command1: ""
