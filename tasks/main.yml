@@ -92,6 +92,7 @@
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
     - ansible_distribution_major_version == "16"
+  changed_when: false
 
 - name: Create .vnc dirs
   file:
