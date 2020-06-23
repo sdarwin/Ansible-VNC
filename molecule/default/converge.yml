@@ -1,0 +1,50 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Run whoami without become.
+      command: whoami
+      changed_when: false
+      become: false
+      register: whoami
+    - name: print whoami
+      debug:
+        var: whoami
+        verbosity: 4
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+    - name: create ubuntu
+      user:
+        name: ubuntu
+      when: ansible_distribution == 'Ubuntu'
+    - name: create admin
+      user:
+        name: admin
+      when: ansible_distribution == 'Debian'
+    - name: create centos
+      user:
+        name: centos
+      when: ansible_distribution == 'CentOS'
+
+    - name: Wait for systemd to complete initialization.  # noqa 303
+      command: systemctl is-system-running
+      register: systemctl_status
+      until: >
+        'running' in systemctl_status.stdout or
+        'degraded' in systemctl_status.stdout
+      retries: 30
+      delay: 5
+      when: ansible_service_mgr == 'systemd'
+      changed_when: false
+      failed_when: systemctl_status.rc > 1
+    - name: fix coreutils-single on containers
+      command: dnf install -y --allowerasing coreutils
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version| int > 7
+      changed_when: false
+  roles:
+    - role: sdarwin.VNC
