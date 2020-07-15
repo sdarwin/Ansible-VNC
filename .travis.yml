@@ -7,7 +7,6 @@ env:
   global:
     - ROLE_NAME: VNC
   matrix:
-    # MOLECULE_DOCKER_COMMAND: /usr/sbin/init
     - MOLECULE_DISTRO: centos8
       MOLECULE_DOCKER_COMMAND: /usr/sbin/init
     - MOLECULE_DISTRO: centos7
@@ -25,7 +24,8 @@ env:
 
 install:
   # Install test dependencies.
-  - sudo pip install ansible docker molecule yamllint ansible-lint
+  - sudo apt-get install -y python3-pip python3-setuptools
+  - sudo pip3 install ansible docker molecule yamllint ansible-lint
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
@@ -50,5 +50,5 @@ script:
   - molecule --debug cleanup
   - molecule --debug destroy
 
-# notifications:
-#   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
