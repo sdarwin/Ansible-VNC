@@ -9,8 +9,10 @@
 
 - name: set facts based on defaults
   set_fact:
-    "{{ item[8:] }}": "{{  vars[item[8:]] | default(vars[item]) }}"
-  when: item is match("^default_")
+    "{{ item[8:] }}": "{{ lookup('vars', item) }}"
+  when:
+    - item is match("^default_")
+    - vars[item[8:]] is not defined
   with_items:
     "{{ vars | list }}"
 
