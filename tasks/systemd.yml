@@ -3,6 +3,9 @@
   file:
     path: /etc/ansible
     state: directory
+    mode: 0755
+    owner: root
+    group: root
 
 - name: Ubuntu16.04/Systemd/Cloud combination requires minimum one reboot, regardless of ansible, in order for this to work.
   shell: touch /etc/ansible/rebooted-once.txt  # noqa 305
