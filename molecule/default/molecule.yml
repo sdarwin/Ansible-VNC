@@ -9,20 +9,17 @@ lint: |
   ansible-lint
 platforms:
   - name: instance
-    image: "sdarwin/${MOLECULE_DISTRO:-centos7}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker
     privileged: true
     pre_build_image: true
+    groups:
+      - monitoring-servers
+
 provisioner:
   name: ansible
-  options:
-    vvv: true
-  config_options:
-    defaults:
-      ansible_python_interpreter: /usr/bin/python3
-      remote_tmp: /tmp/ansibletmp
-  log: true
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
