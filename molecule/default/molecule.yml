@@ -16,8 +16,6 @@ platforms:
       - /var/lib/docker
     privileged: true
     pre_build_image: true
-    groups:
-      - monitoring-servers
 
 provisioner:
   name: ansible

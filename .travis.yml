@@ -25,7 +25,7 @@ env:
 install:
   # Install test dependencies.
   - sudo apt-get install -y python3-pip python3-setuptools
-  - sudo pip3 install ansible docker molecule yamllint ansible-lint
+  - sudo pip3 install ansible docker molecule[docker] yamllint ansible-lint
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
