@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: VNC
   author: sdarwin
   description: VNC Installer
   license: GPLv2
