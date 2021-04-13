@@ -47,5 +47,5 @@ fi
 
 sudo mkdir -p /etc/ansible/roles
 cd /etc/ansible/roles
-sudo git clone https://github.com/sdarwin/Ansible-VNC sdarwin.VNC
+sudo git clone https://github.com/sdarwin/Ansible-VNC sdarwin.vnc
 

@@ -51,6 +51,18 @@
     - ansible_distribution_major_version == "8"
     - vnc_desktop == "xfce4"
 
+- name: install epel gpg key
+  ansible.builtin.rpm_key:
+    state: present
+    key: http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+  when:
+    - ansible_os_family == "RedHat"
+
+# - name: install epel gpg key
+#   command: rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+#   when:
+#     - ansible_os_family == "RedHat"
+
 - name: install general packages
   package:
     name: "{{ item }}"

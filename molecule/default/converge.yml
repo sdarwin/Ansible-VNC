@@ -47,4 +47,4 @@
         - ansible_distribution_major_version| int > 7
       changed_when: false
   roles:
-    - role: sdarwin.VNC
+    - role: sdarwin.vnc
