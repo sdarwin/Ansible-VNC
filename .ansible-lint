@@ -1,3 +1,5 @@
 ---
 skip_list:
   - '106'
+warning_list:
+  - ignore-errors

@@ -7,7 +7,7 @@
 - name: Include Distribution version specific variables
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
-- name: set facts based on defaults
+- name: set facts based on defaults  # noqa var-naming
   set_fact:
     "{{ item[8:] }}": "{{ lookup('vars', item) }}"
   when:
@@ -101,7 +101,7 @@
     - ansible_distribution_major_version == "16"
 
 - name: install tigervnc
-  shell: apt install "/opt/downloads/{{ vnc_tiger_file }}"  # noqa 305
+  shell: apt install -y "/opt/downloads/{{ vnc_tiger_file }}"  # noqa 305
   when:
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
