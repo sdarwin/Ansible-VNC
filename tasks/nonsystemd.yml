@@ -55,4 +55,4 @@
   shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}  # noqa 301 305
   with_items: "{{ vnc_users }}"
   changed_when: false
-  ignore_errors: true
+  failed_when: false
