@@ -47,13 +47,13 @@
   with_items: "{{ checksystemd.results }}"
 
 - name: systemctl daemon-reload
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}  # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"
 
 - name: systemctl enable
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}  # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"
 
 - name: systemctl start
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$UID" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}  # noqa 204 301
+  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}  # noqa 204 301
   with_items: "{{ vnc_users }}"
