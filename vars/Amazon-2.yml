@@ -1,6 +1,5 @@
 ---
 default_vnc_general_packages:
-  - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
   - htop
   - nload
   - net-tools
