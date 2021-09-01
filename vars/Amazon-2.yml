@@ -1,0 +1,35 @@
+---
+default_vnc_general_packages:
+  - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+  - htop
+  - nload
+  - net-tools
+
+default_vnc_users:
+  - username: 'ec2-user'
+    usergroup: 'ec2-user'
+    # port 5901 is 1
+    vnc_num: 1
+    vnc_default_password: mypassword
+    vnc_client_options_per_user: "-localhost"
+
+default_vnc_desktop_packages:
+  gnome:
+    # - gnome-desktop
+    # - gnome-panel
+    - gnome-settings-daemon
+    - metacity
+    - nautilus
+    - gnome-terminal
+    - xterm
+  xfce4:
+    - "@Xfce"
+    # - gnome-icon-theme
+    # - gnome-terminal
+    # - firefox
+    - xterm
+
+default_vnc_general_packages:
+  - htop
+  - nload
+  - net-tools
