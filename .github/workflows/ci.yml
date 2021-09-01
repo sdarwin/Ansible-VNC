@@ -59,6 +59,8 @@ jobs:
             playbook: converge.yml
           - distro: ubuntu2004
             playbook: converge.yml
+          - distro: amazonlinux2
+            playbook: converge.yml
 
     steps:
       - name: Check out the codebase.

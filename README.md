@@ -4,7 +4,7 @@ Installs and configures VNC Server/Desktop. By default, this will be TigerVNC an
 
 VNC Servers: TigerVNC, TightVNC, vnc4server
 Desktops: Gnome, Xfce4
-Operating Systems: Ubuntu, Debian, Redhat, Centos
+Operating Systems: Ubuntu, Debian, Redhat, Centos, Amazon Linux
 
 ## Requirements
 
