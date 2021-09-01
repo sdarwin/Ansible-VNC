@@ -55,8 +55,11 @@
   ansible.builtin.rpm_key:
     state: present
     key: http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
-  when:
-    - ansible_os_family == "RedHat"
+#on Amazon epel should be enabled in advance with the `amazon-linux-extras' command
+  when: (ansible_os_family == "RedHat") and ( ansible_distribution != "Amazon" )
+#if this fails but later package install succeeds due to another route for package discovery
+# then it's fine
+  ignore_errors: True
 
 # - name: install epel gpg key
 #   command: rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
