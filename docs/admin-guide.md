@@ -27,7 +27,7 @@ In the vnc_users variable, you will assigned each user a different desktop and p
 ### FACTOIDS
 
 - Combinations of things that don't work.
-  - The systemd per-user strategy doesn't work with RedHat, because RedHat has disabled systemctl --user. Thefore, only use the standard ~/vncstart.sh method.
+  - The systemd per-user strategy doesn't work with Rocky Linux, RedHat or Amazon Linux, because RedHat has disabled systemctl --user. Thefore, only use the standard ~/vncstart.sh method.
   - RedHat-8 does not support Xfce. A workaround is included for CentOS-8, so that is still possible.
   - RedHat/CentOS-8 only has tigervnc-server, not vnc4server or tightvnc.
   - The xstartup file doesn't start Gnome-Terminal with the particular combination of Ubuntu17/Tiger/Gnome. Possible solutions include removing or modifying the xstartup file. vnc4server works.
