@@ -27,8 +27,3 @@ default_vnc_desktop_packages:
     # - gnome-terminal
     # - firefox
     - xterm
-
-default_vnc_general_packages:
-  - htop
-  - nload
-  - net-tools
