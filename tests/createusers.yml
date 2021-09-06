@@ -14,6 +14,10 @@
       user:
         name: centos
       when: ansible_distribution == 'CentOS'
+    - name: create rocky
+      user:
+        name: rocky
+      when: ansible_distribution == 'Rocky'
     - name: create ec2-user
       user:
         name: ec2-user
