@@ -24,8 +24,8 @@ Putty has a similar configuration for tunneling, within the GUI.
 
 On the server-side, start vnc with the command ./vncstart.sh in your home directory. It might already be running. ./vncstop.sh will stop it.
 
-Check your ~/.bashrc file, it may include the command "vncstart.sh" which will start vnc every time you log in.  
- 
+Check your ~/.bashrc file, it may include the command "vncstart.sh" which will start vnc every time you log in.
+
 Install a VNC viewer on your local computer. Connect to localhost:5901, for example. The initial password should be provided by your administrator. Otherwise, you may reset the password from the ssh session. The command is:
 
 vncpasswd

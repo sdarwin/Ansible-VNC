@@ -1,4 +1,4 @@
-xb---
+---
 default_vnc_users:
   - username: 'admin'
     usergroup: 'admin'
