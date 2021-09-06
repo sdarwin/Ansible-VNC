@@ -23,6 +23,8 @@ env:
       MOLECULE_DOCKER_COMMAND: /lib/systemd/systemd
     - MOLECULE_DISTRO: amazonlinux2
       MOLECULE_DOCKER_COMMAND: /lib/systemd/systemd
+    - MOLECULE_DISTRO: rocky8
+      MOLECULE_DOCKER_COMMAND: /usr/sbin/init
 
 install:
   # Install test dependencies.
