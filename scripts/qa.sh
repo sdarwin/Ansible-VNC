@@ -29,7 +29,7 @@ then
   fi
 fi
 
-if ! which ansible 
+if ! which ansible
 then
   if [[ -f /usr/bin/apt-get ]]
   then
@@ -48,4 +48,3 @@ fi
 sudo mkdir -p /etc/ansible/roles
 cd /etc/ansible/roles
 sudo git clone https://github.com/sdarwin/Ansible-VNC sdarwin.vnc
-
