@@ -1,0 +1,15 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/ansible-community/ansible-lint.git
+    rev: v5.1.2
+    hooks:
+      - id: ansible-lint
+        args:
+          - -p
+        files: \.(yaml|yml)$
