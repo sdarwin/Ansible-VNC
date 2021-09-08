@@ -6,6 +6,7 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/ansible-community/ansible-lint.git
     rev: v5.1.2
     hooks:
