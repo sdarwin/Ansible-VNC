@@ -34,7 +34,7 @@ vnc_desktop: gnome
 
 # vnc_server: tigervnc
 
-vnc_client_options: "-geometry 1280x720 -localhost"
+vnc_client_options: "-geometry 1600x1200 -localhost"
 
 ### Should the role generate and enable per-user systemd services for VNC desktops?
 vnc_install_systemd_services: false
