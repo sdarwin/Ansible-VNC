@@ -1,0 +1,10 @@
+{% if vnc_desktop == "gnome" %}
+session=gnome
+{% elif vnc_desktop == "xfce4" %}
+session=xfce
+{% else %}
+session=gnome
+{% endif %}
+{% for option in vnc_config_options %}
+{{ option }}
+{% endfor %}

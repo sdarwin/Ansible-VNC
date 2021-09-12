@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/bin/vncserver :{{ item.item.vnc_num }} {{ vnc_client_options }} {{ vnc_client_options_per_user | default() }}
+sudo systemctl start tigervncserver@\:{{ item.item.vnc_num }}.service

@@ -34,7 +34,13 @@ vnc_desktop: gnome
 
 # vnc_server: tigervnc
 
+# when vnc_paradigm == "version1" ...
 vnc_client_options: "-geometry 1600x1200 -localhost"
+
+# when vnc_paradigm == "version2" ...
+vnc_config_options:
+  - "geometry=1600x1200"
+  - "localhost"
 
 ### Should the role generate and enable per-user systemd services for VNC desktops?
 vnc_install_systemd_services: false
@@ -48,6 +54,9 @@ vnc_ansible_managed_startup_scripts: false
 
 ### Ansible will create xstartup. The question is should Ansible overwrite xstartup files later on? Set this to True or False.
 vnc_ansible_managed_xstartup: false
+
+### Ansible will create .vnc/config. The question is should Ansible overwrite .vnc/config later on? Set this to True or False.
+vnc_ansible_managed_config: false
 
 ### It has been discovered that an Ubuntu server, in the Cloud, ought to be rebooted at least one time in order to fix the locale settings.
 ### If you set this to True, then Ansible will reboot the server. The default here is False, so you will need to reboot manually.
