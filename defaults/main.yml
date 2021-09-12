@@ -35,11 +35,11 @@ vnc_desktop: gnome
 # vnc_server: tigervnc
 
 # when vnc_paradigm == "version1" ...
-vnc_client_options: "-geometry 1600x1200 -localhost"
+vnc_client_options: "-geometry 1920x1200 -localhost"
 
 # when vnc_paradigm == "version2" ...
 vnc_config_options:
-  - "geometry=1600x1200"
+  - "geometry=1920x1200"
   - "localhost"
 
 ### Should the role generate and enable per-user systemd services for VNC desktops?
