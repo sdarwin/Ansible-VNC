@@ -6,23 +6,27 @@ Next, the file defaults/main.yml is self-documented. You should read through it 
 
 Some VNC servers out-of-the-box will require ssh tunnels because they only listen on localhost. This is a secure configuration, since everything is over an encrypted tunnel. Notice the variable vnc_client_options: "-geometry 1280x720 -localhost". The flag -localhost will instruction VNC to only listen on localhost, if it was not already doing so.
 
-### SYSTEMD
+### TigerVNC update - 1.11.0 - Sept 2020
 
-The most interesting and experimental feature in this Ansible Role is per-user systemd services. However, it is optional. By default, systemd files will not be installed. In order to enable the feature, set vnc_install_systemd_services: True
+TigerVNC has changed the way VNC servers are administered. They have switched to using systemd service files instead of running the vncserver command manually. The role now supports that, by setting vnc_paradigm=version2.  When using a more traditional, older VNC server, set vnc_paradigm=version1.
 
-The advantage of systemd is that the service will startup automatically on boot. If everything works correctly the users will not even need to start VNC. It will "just work".
-
-Without the systemd option, users will instead need to run ~/vncstart.sh , which launches VNC Server.
-
-vncstart.sh is still fairly convenient, because the desktop number and screen resolution will already be included in the file.
-
-### ANSIBLE MANAGED FILES
-
-Another design choice, is whether or not Ansible ought to manage the files ~/.vnc/xstartup , ~/.config/systemd/user/vncserver.service, and ~/vncstart.sh in such a way that every single time Ansible is run, those files will be overwritten, again and again. Thus, should the files be "ansible managed", or should the user be allowed to customize them? The settings for that choice are found in the variables vnc_ansible_managed_xstartup and vnc_ansible_managed_startup_scripts. They are currently set to False, by design.
+This update is still in flux, and the way it is handled may be redesigned.  
 
 ### ASSIGNING DESKTOP AND PORT NUMBERS
 
 In the vnc_users variable, you will assigned each user a different desktop and port number. These numbers will be provisioned into their ~/vncstart.sh file (or ~/.config/systemd/user/vncserver.service for systemd). You should inform them "Your desktop is :2, and port number is 5902."
+
+### ANSIBLE MANAGED FILES
+
+A choice to consider is whether or not Ansible ought to manage files such as ~/.vnc/config, ~/.vnc/xstartup, ~/vncstart.sh in such a way that every single time Ansible is run, those files will be overwritten, again and again. Thus, should the files be "ansible managed", or should the user be allowed to customize them? The settings for that choice are found in the variables vnc_ansible_managed_xstartup and vnc_ansible_managed_startup_scripts. They are currently set to False, by design.
+
+### SYSTEMD 
+
+The latest version of TigerVNC leverages systemd to start VNC sessions.
+
+### "LEGACY" PER-USER SYSTEMD
+
+In the timeframe of 2018-2020, before TigerVNC adopted systemd, this ansible role implemented an experimental feature to configure per-user systemd services. However, it is optional. In order to enable the feature, set vnc_install_systemd_services: True 
 
 ### FACTOIDS
 

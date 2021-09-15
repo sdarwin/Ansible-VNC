@@ -34,6 +34,12 @@ vnc_desktop: gnome
 
 # vnc_server: tigervnc
 
+### Choices are "version2" and "version1". If using tigervnc 1.11.0 or later (released on 2020-09), choose version2.
+### Some default choices have already been set in the vars/ folder
+### This setting may eventually be "automated" further.
+
+# vnc_paradigm: version1
+
 # when vnc_paradigm == "version1" ...
 vnc_client_options: "-geometry 1920x1200 -localhost"
 
@@ -42,7 +48,7 @@ vnc_config_options:
   - "geometry=1920x1200"
   - "localhost"
 
-### Should the role generate and enable per-user systemd services for VNC desktops?
+### Should the role generate and enable per-user systemd services for VNC desktops? This variable refers to a previous implementation of per-user systemd, before the newer TigerVNC update, where standard systemd is used.
 vnc_install_systemd_services: false
 
 ### Add the vncstart.sh script to users' .bashrc for vnc autostart when logging in? Recommended.
