@@ -38,3 +38,5 @@ default_vnc_install_systemd_services: false
 default_vnc_ansible_managed_startup_scripts: false
 
 default_xstartup_additional_command1: ""
+
+default_vnc_systemd_service_name: "vncserver"

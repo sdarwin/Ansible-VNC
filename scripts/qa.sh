@@ -34,7 +34,7 @@ then
   if [[ -f /usr/bin/apt-get ]]
   then
     sudo apt-get install -y python3-pip
-    sudo pip3 install ansible
+    sudo pip3 install ansible ansible-lint yamllint
   fi
   if [[ -f /bin/yum ]]
   then
