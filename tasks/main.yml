@@ -117,41 +117,6 @@
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
-- name: checking existence of xstartup files
-  stat:
-    path: "/home/{{ item.username }}/.vnc/xstartup"
-  register: checkxstartup
-  with_items: "{{ vnc_users }}"
-
-- name: Update "xstartup" file
-  template:
-    src: xstartup.j2
-    dest: "/home/{{ item.item.username }}/.vnc/xstartup"
-    mode: 0755
-    owner: "{{ item.item.username }}"
-    group: "{{ item.item.usergroup | default(item.item.username) }}"
-  when:
-    - vnc_ansible_managed_xstartup or not item.stat.exists
-  with_items: "{{ checkxstartup.results }}"
-
-# the file .dmrc is currently for Redhat/Centos
-- name: checking existence of .dmrc files
-  stat:
-    path: "/home/{{ item.username }}/.dmrc"
-  register: checkdmrc
-  with_items: "{{ vnc_users }}"
-
-- name: Update .dmrc file
-  template:
-    src: dmrc.j2
-    dest: "/home/{{ item.item.username }}/.dmrc"
-    mode: 0755
-    owner: "{{ item.item.username }}"
-    group: "{{ item.item.usergroup | default(item.item.username) }}"
-  when:
-    - vnc_ansible_managed_xstartup or not item.stat.exists
-  with_items: "{{ checkdmrc.results }}"
-
 - name: Set vnc passwords tightvnc
   shell: |
     set -o pipefail
@@ -182,10 +147,174 @@
     mode: 0700
   with_items: "{{ vnc_users }}"
 
-- name: include systemd auto-start services
-  include: systemd.yml
-  when: vnc_install_systemd_services
+####################################################################################
 
-- name: include basic shell scripts to start services
-  include: nonsystemd.yml
-  when: not vnc_install_systemd_services
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Set tiger version redhat
+  set_fact:
+    tiger_ver_installed: "{{ ansible_facts.packages['tigervnc-server'][0].version }}"
+  when: "'tigervnc-server' in ansible_facts.packages"
+
+- name: Set tiger version debian
+  set_fact:
+    tiger_ver_installed: "{{ ansible_facts.packages['tigervnc-standalone-server'][0].version }}"
+  when: "'tigervnc-standalone-server' in ansible_facts.packages"
+
+- name: Print the tiger version
+  ansible.builtin.debug:
+    var: tiger_ver_installed
+
+- name: Set fact, type of install 1
+  set_fact:
+    vnc_paradigm: "version1"
+
+- name: Set fact, type of install 2
+  set_fact:
+    vnc_paradigm: "version2"
+  when:
+    - tiger_ver_installed is defined
+    - tiger_ver_installed is version('1.11.0', '>=')
+
+- name: Set fact, type of install 3
+  set_fact:
+    vnc_paradigm: "{{ vnc_paradigm_override }}"
+  when: vnc_paradigm_override is defined
+
+- name: Check fact, type of install 4
+  ansible.builtin.debug:
+    var: vnc_paradigm
+
+####################################################################################
+#
+- name: vnc_paradigm version1
+  block:
+    - name: checking existence of xstartup files
+      stat:
+        path: "/home/{{ item.username }}/.vnc/xstartup"
+      register: checkxstartup
+      with_items: "{{ vnc_users }}"
+
+    - name: Update "xstartup" file
+      template:
+        src: xstartup.j2
+        dest: "/home/{{ item.item.username }}/.vnc/xstartup"
+        mode: 0755
+        owner: "{{ item.item.username }}"
+        group: "{{ item.item.usergroup | default(item.item.username) }}"
+      when:
+        - vnc_ansible_managed_xstartup or not item.stat.exists
+      with_items: "{{ checkxstartup.results }}"
+
+    # the file .dmrc is currently for Redhat/Centos
+    - name: checking existence of .dmrc files
+      stat:
+        path: "/home/{{ item.username }}/.dmrc"
+      register: checkdmrc
+      with_items: "{{ vnc_users }}"
+
+    - name: Update .dmrc file
+      template:
+        src: dmrc.j2
+        dest: "/home/{{ item.item.username }}/.dmrc"
+        mode: 0755
+        owner: "{{ item.item.username }}"
+        group: "{{ item.item.usergroup | default(item.item.username) }}"
+      when:
+        - vnc_ansible_managed_xstartup or not item.stat.exists
+      with_items: "{{ checkdmrc.results }}"
+
+    - name: Set vncstart template
+      set_fact:
+        vncstarttemplate: vncstart-perusersystemd.sh.j2
+      when: vnc_install_systemd_services
+
+    - name: Set vncstop template
+      set_fact:
+        vncstoptemplate: vncstop-perusersystemd.sh.j2
+      when: vnc_install_systemd_services
+
+    - name: include systemd auto-start services
+      include: autostart-perusersystemd.yml
+      when: vnc_install_systemd_services
+
+    - name: Set vncstart template
+      set_fact:
+        vncstarttemplate: vncstart.sh.j2
+
+    - name: Set vncstop template
+      set_fact:
+        vncstoptemplate: vncstop.sh.j2
+
+    - name: include basic shell scripts to start services
+      include: autostart-standard.yml
+      when: not vnc_install_systemd_services
+  when: vnc_paradigm == "version1"
+
+##############################################################################################
+
+- name: vnc_paradigm version2
+  block:
+    ## Consider adding this kind of functionality back later. It's useful. However supposedly xstartup is deprecated.
+    # - name: checking existence of xstartup files
+    # - name: Update "xstartup" file
+    # - name: checking existence of .dmrc files
+    # - name: Update .dmrc file
+
+    - name: vncserver.users file
+      template:
+        src: vncserver.users.j2
+        dest: /etc/tigervnc/vncserver.users
+        mode: 0644
+        owner: root
+        group: root
+
+    - name: checking existence of per-user .vnc/config
+      stat:
+        path: "/home/{{ item.username }}/vnc/config"
+      register: checkvncconfig
+      with_items: "{{ vnc_users }}"
+
+    - name: Update per-user .vnc/config
+      template:
+        src: config.j2
+        dest: "/home/{{ item.item.username }}/.vnc/config"
+        mode: 0755
+        owner: "{{ item.item.username }}"
+        group: "{{ item.item.usergroup | default(item.item.username) }}"
+      when:
+        - vnc_ansible_managed_config or not item.stat.exists
+      with_items: "{{ checkvncconfig.results }}"
+
+
+    - name: Enable vnc systemd service for each user
+      ansible.builtin.systemd:
+        name: "{{ vnc_systemd_service_name }}@:{{ item.vnc_num }}.service"
+        enabled: true
+      with_items: "{{ vnc_users }}"
+
+    - name: allow users to start their vnc session with sudo
+      ansible.builtin.lineinfile:
+        path: "/etc/sudoers.d/{{ item.username }}"
+        # yamllint disable-line rule:line-length
+        line: "{{ item.username }} ALL = NOPASSWD: /bin/systemctl start tigervncserver@\\:{{ item.vnc_num }}.service, /bin/systemctl stop tigervncserver@\\:{{ item.vnc_num }}.service, /bin/systemctl status tigervncserver@\\:{{ item.vnc_num }}.service"
+        owner: root
+        group: root
+        mode: '0440'
+        create: true
+      with_items: "{{ vnc_users }}"
+
+    - name: Set vncstart template
+      set_fact:
+        vncstarttemplate: vncstart-v2.sh.j2
+
+    - name: Set vncstop template
+      set_fact:
+        vncstoptemplate: vncstop-v2.sh.j2
+
+    - name: include v2 auto-start services
+      include: autostart-standard.yml
+
+  when: vnc_paradigm == "version2"

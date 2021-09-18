@@ -34,9 +34,16 @@ vnc_desktop: gnome
 
 # vnc_server: tigervnc
 
-vnc_client_options: "-geometry 1600x1200 -localhost"
+# Used with older vnc servers.
+vnc_client_options: "-geometry 1920x1200 -localhost"
+
+# Used by this role on newer tiger vnc servers.
+vnc_config_options:
+  - "geometry=1920x1200"
+  - "localhost"
 
 ### Should the role generate and enable per-user systemd services for VNC desktops?
+### This variable refers to a previous implementation of per-user systemd, before the newer TigerVNC update, where standard systemd is used.
 vnc_install_systemd_services: false
 
 ### Add the vncstart.sh script to users' .bashrc for vnc autostart when logging in? Recommended.
@@ -49,7 +56,16 @@ vnc_ansible_managed_startup_scripts: false
 ### Ansible will create xstartup. The question is should Ansible overwrite xstartup files later on? Set this to True or False.
 vnc_ansible_managed_xstartup: false
 
+### Ansible will create .vnc/config. The question is should Ansible overwrite .vnc/config later on? Set this to True or False.
+vnc_ansible_managed_config: false
+
 ### It has been discovered that an Ubuntu server, in the Cloud, ought to be rebooted at least one time in order to fix the locale settings.
 ### If you set this to True, then Ansible will reboot the server. The default here is False, so you will need to reboot manually.
 ### Only affects the systemd type configuration, otherwise not relevant.
 vnc_reboot_once: false
+
+### An internal role variable called vnc_paradigm refers to which sort of vnc server you are installing.
+### version1: everything before the year 2020. Start vnc with the vncserver command.
+### version2: tigervnc 1.11.0 and later. Runs vnc as a systemd service.
+### You can override/set the variable with vnc_paradigm_override to "version1" or "version2". However, it should be automatically determined so you don't need to change this.
+# vnc_paradigm_override: version1

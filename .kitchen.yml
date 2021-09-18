@@ -1,4 +1,14 @@
 ---
+
+# Installer:
+# #!/bin/bash
+# apt-get update
+# apt-get install -y build-essential
+# apt-get install -y ruby ruby-dev
+# gem install test-kitchen kitchen-ansible kitchen-ec2
+
+# Place this role into a subdir of an _empty_ dir. Because, kitchen uploads all nearby dirs.
+
 driver:
   name: ec2
   region: ca-central-1
@@ -12,38 +22,49 @@ transport:
   ssh_key: /root/.ssh/testkitchen.pem
   connection_timeout: 10
   connection_retries: 5
+  max_ssh_sessions: 2
 
 platforms:
-  - name: ubuntu-20.04
+  #  - name: ubuntu-21.04
+  #    driver:
+  #      image_id: ami-00d9a1f9aa698cd29
+  #    transport:
+  #      username: ubuntu
+  #  - name: ubuntu-20.04
+  #    driver:
+  #      image_id: ami-08a6203f59f9df866
+  #    transport:
+  #      username: ubuntu
+  # - name: ubuntu-18.04
+  #   driver:
+  #     image_id: ami-0427e8367e3770df1
+  #   transport:
+  #     username: ubuntu
+  #   - name: ubuntu-16.04
+  #     driver:
+  #       image_id: ami-018b3065
+  #     transport:
+  #       username: ubuntu
+  # - name: ubuntu-17.10
+  #   driver:
+  #     image_id: ami-cfba02ab
+  #   transport:
+  #     username: ubuntu
+  # - name: ubuntu-17.04
+  #   driver:
+  #     image_id: ami-02b20966
+  #   transport:
+  #     username: ubuntu
+  - name: debian-11
     driver:
-      image_id: ami-08a6203f59f9df866
+      image_id: ami-0a1eebd24eb7a0cec
     transport:
-      username: ubuntu
-# - name: ubuntu-18.04
-#   driver:
-#     image_id: ami-0427e8367e3770df1
-#   transport:
-#     username: ubuntu
-#  - name: ubuntu-16.04
-#    driver:
-#      image_id: ami-018b3065
-#    transport:
-#      username: ubuntu
-# - name: ubuntu-17.10
-#   driver:
-#     image_id: ami-cfba02ab
-#   transport:
-#     username: ubuntu
-# - name: ubuntu-17.04
-#   driver:
-#     image_id: ami-02b20966
-#   transport:
-#     username: ubuntu
-# - name: debian-10
-#   driver:
-#     image_id: ami-037099906a22f210f
-#   transport:
-#     username: admin
+      username: admin
+  - name: debian-10
+    driver:
+      image_id: ami-037099906a22f210f
+    transport:
+      username: admin
 # - name: debian-9.3
 # driver:
 # image_id: ami-1545ff71
@@ -54,6 +75,11 @@ platforms:
 # image_id: ami-b111aad5
 # transport:
 # username: centos
+#  - name: centos-8
+#    driver:
+#    image_id: ami-0949556ba850896ed
+#    transport:
+#    username: centos
 
 provisioner:
   name: ansible_playbook
@@ -61,9 +87,12 @@ provisioner:
   hosts: test-kitchen
   # the default setting:
   # playbook: default.yml
-  require_ansible_repo: true
+  # require_ansible_repo: true
   ansible_verbose: true
   ansible_version: latest
+  # require_pip: true
+  # ansible_binary_path: /usr/local/bin
+  custom_pre_install_command: if [ -e /usr/bin/apt-get ]; then apt-get update; fi
   require_chef_for_busser: false
   # ansible_connection: winrm
   # require_windows_support: true
@@ -72,42 +101,43 @@ provisioner:
   #   vnc_server: tigervnc
   #
 suites:
-  - name: tigervnc-xfce4
+  #   - name: tigervnc-xfce4
+  #     attributes:
+  #       extra_vars:
+  #         vnc_desktop: xfce4
+  #         vnc_server: tigervnc
+  #         default_vnc_users:
+  #           - username: 'admin'
+  #             # usergroup: 'admin'
+  #             # port 5901 is 1
+  #             vnc_num: 1
+  #             vnc_default_password: mypassword
+  #           - username: 'john'
+  #             # port 5902 is 2
+  #             vnc_num: 2
+  #             vnc_default_password: mypassword
+  #             # vnc_client_options_per_user: "-localhost"
+  - name: tigervnc-gnome
     attributes:
       extra_vars:
-        vnc_desktop: xfce4
+        vnc_desktop: gnome
         vnc_server: tigervnc
-        default_vnc_users:
-          - username: 'admin'
-            # usergroup: 'admin'
-            # port 5901 is 1
-            vnc_num: 1
-            vnc_default_password: mypassword
-          - username: 'john'
-            # port 5902 is 2
-            vnc_num: 2
-            vnc_default_password: mypassword
-            # vnc_client_options_per_user: "-localhost"
-# - name: tigervnc-gnome
-#   attributes:
-#     extra_vars:
-#       vnc_desktop: gnome
-#       vnc_server: tigervnc
-# - name: tightvnc-gnome
-#   attributes:
-#     extra_vars:
-#       vnc_desktop: gnome
-#       vnc_server: tightvnc
-# - name: tightvnc-xfce4
-#   attributes:
-#     extra_vars:
-#       vnc_desktop: xfce4
-#       vnc_server: tightvnc
-# - name: vnc4server-gnome
-#   attributes:
-#     extra_vars:
-#       vnc_desktop: gnome
-#       vnc_server: vnc4server
+#        vnc_install_systemd_services: true
+#  - name: tightvnc-gnome
+#    attributes:
+#      extra_vars:
+#        vnc_desktop: gnome
+#        vnc_server: tightvnc
+#  - name: tightvnc-xfce4
+#    attributes:
+#      extra_vars:
+#        vnc_desktop: xfce4
+#        vnc_server: tightvnc
+#  - name: vnc4server-gnome
+#    attributes:
+#      extra_vars:
+#        vnc_desktop: gnome
+#        vnc_server: vnc4server
 # - name: vnc4server-xfce4
 #   attributes:
 #     extra_vars:

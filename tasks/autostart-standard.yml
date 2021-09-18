@@ -7,7 +7,7 @@
 
 - name: Update per-user basic scripts to start vnc
   template:
-    src: vncstart.sh.j2
+    src: "{{ vncstarttemplate }}"
     dest: "/home/{{ item.item.username }}/vncstart.sh"
     mode: 0755
     owner: "{{ item.item.username }}"
@@ -24,7 +24,7 @@
 
 - name: Update per-user basic scripts to stop vnc
   template:
-    src: vncstop.sh.j2
+    src: "{{ vncstoptemplate }}"
     dest: "/home/{{ item.item.username }}/vncstop.sh"
     mode: 0755
     owner: "{{ item.item.username }}"

@@ -6,6 +6,7 @@ name: CI
     branches:
       - master
       - develop
+      - feature/*
   schedule:
     - cron: "0 4 * * 3"
 
@@ -53,6 +54,8 @@ jobs:
             playbook: converge.yml
           - distro: debian10
             playbook: converge.yml
+          - distro: debian11
+            playbook: converge.yml
           - distro: ubuntu1604
             playbook: converge.yml
           - distro: ubuntu1804
@@ -72,7 +75,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
+        run: pip3 install ansible ansible-lint molecule[docker] docker
 
       - name: Run Molecule tests.
         run: molecule test

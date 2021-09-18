@@ -1,7 +1,5 @@
 # Ansible-VNC
 
-* Important Note: tigervnc 1.11.0 has been released. That architecture is different than 1.10.0 and prior. The Ansible role does not yet handle tiger 1.11.0, hopefully within the next 1-2 months an update will be made. Does not yet affect standard package on Ubuntu 20.04.  
-
 Installs and configures VNC Server/Desktop. By default, this will be TigerVNC and Gnome. However, you may easily select from a few others including
 
 VNC Servers: TigerVNC, TightVNC, vnc4server
@@ -25,7 +23,6 @@ Copy the contents of defaults/main.yml to your local groups_vars/all and modify 
 Review the documentation included in this repo:<br/>
 docs/admin-guide.md<br/>
 docs/users-guide.md<br/>
-docs/users-guide-systemd.md
 
 ## Quickstart
 

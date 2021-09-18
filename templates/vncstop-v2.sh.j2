@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo systemctl stop {{ vnc_systemd_service_name }}@:{{ item.item.vnc_num }}.service
