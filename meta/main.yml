@@ -19,6 +19,7 @@ galaxy_info:
     - name: Debian
       versions:
         - jessie
+    - name: Amazon
   galaxy_tags:
     - vnc
     - system

@@ -62,6 +62,8 @@ jobs:
             playbook: converge.yml
           - distro: ubuntu2004
             playbook: converge.yml
+          - distro: amazonlinux2
+            playbook: converge.yml
           - distro: rockylinux8
             playbook: converge.yml
 

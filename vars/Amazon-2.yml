@@ -1,0 +1,138 @@
+---
+default_vnc_general_packages:
+  - htop
+  - net-tools
+
+default_vnc_users:
+  - username: 'ec2-user'
+    usergroup: 'ec2-user'
+    # port 5901 is 1
+    vnc_num: 1
+    vnc_default_password: mypassword
+    vnc_client_options_per_user: "-localhost"
+
+default_vnc_desktop_packages:
+  gnome:
+    - gnome-backgrounds.noarch
+    - gnome-bluetooth.x86_64
+    - gnome-bluetooth-libs.x86_64
+    - gnome-bluetooth-libs-devel.x86_64
+    - gnome-boxes.x86_64
+    - gnome-calculator.x86_64
+    - gnome-classic-session.noarch
+    - gnome-clocks.x86_64
+    - gnome-color-manager.x86_64
+    - gnome-common.noarch
+    - gnome-contacts.x86_64
+    - gnome-desktop3.x86_64
+    - gnome-desktop3-devel.x86_64
+    - gnome-desktop3-tests.x86_64
+    - gnome-devel-docs.noarch
+    - gnome-dictionary.x86_64
+    - gnome-disk-utility.x86_64
+    - gnome-doc-utils.noarch
+    - gnome-doc-utils-stylesheets.noarch
+    - gnome-documents.x86_64
+    - gnome-documents-libs.x86_64
+    - gnome-font-viewer.x86_64
+    - gnome-getting-started-docs.noarch
+    - gnome-getting-started-docs-cs.noarch
+    - gnome-getting-started-docs-de.noarch
+    - gnome-getting-started-docs-es.noarch
+    - gnome-getting-started-docs-fr.noarch
+    - gnome-getting-started-docs-gl.noarch
+    - gnome-getting-started-docs-hu.noarch
+    - gnome-getting-started-docs-it.noarch
+    - gnome-getting-started-docs-pl.noarch
+    - gnome-getting-started-docs-pt_BR.noarch
+    - gnome-getting-started-docs-ru.noarch
+    - gnome-icon-theme.noarch
+    - gnome-icon-theme-devel.noarch
+    - gnome-icon-theme-extras.noarch
+    - gnome-icon-theme-legacy.noarch
+    - gnome-icon-theme-symbolic.noarch
+    - gnome-keyring.x86_64
+    - gnome-keyring-pam.x86_64
+    - gnome-menus.x86_64
+    - gnome-menus-devel.x86_64
+    - gnome-online-accounts.x86_64
+    - gnome-online-accounts-devel.x86_64
+    - gnome-online-miners.x86_64
+    - gnome-packagekit-common.x86_64
+    - gnome-packagekit-installer.x86_64
+    - gnome-python2.x86_64
+    - gnome-python2-bonobo.x86_64
+    - gnome-python2-canvas.x86_64
+    - gnome-python2-devel.x86_64
+    - gnome-python2-gconf.x86_64
+    - gnome-python2-gnome.x86_64
+    - gnome-python2-gnomevfs.x86_64
+    - gnome-session.x86_64
+    - gnome-session-custom-session.x86_64
+    - gnome-session-wayland-session.x86_64
+    - gnome-session-xsession.x86_64
+    - gnome-settings-daemon.x86_64
+    - gnome-settings-daemon-devel.x86_64
+    - gnome-shell.x86_64
+    - gnome-shell-extension-alternate-tab.noarch
+    - gnome-shell-extension-apps-menu.noarch
+    - gnome-shell-extension-auto-move-windows.noarch
+    - gnome-shell-extension-common.noarch
+    - gnome-shell-extension-dash-to-dock.noarch
+    - gnome-shell-extension-drive-menu.noarch
+    - gnome-shell-extension-launch-new-instance.noarch
+    - gnome-shell-extension-native-window-placement.noarch
+    - gnome-shell-extension-no-hot-corner.noarch
+    - gnome-shell-extension-panel-favorites.noarch
+    - gnome-shell-extension-places-menu.noarch
+    - gnome-shell-extension-screenshot-window-sizer.noarch
+    - gnome-shell-extension-systemMonitor.noarch
+    - gnome-shell-extension-top-icons.noarch
+    - gnome-shell-extension-updates-dialog.noarch
+    - gnome-shell-extension-user-theme.noarch
+    - gnome-shell-extension-window-list.noarch
+    - gnome-shell-extension-windowsNavigator.noarch
+    - gnome-shell-extension-workspace-indicator.noarch
+    - gnome-system-log.x86_64
+    - gnome-system-monitor.x86_64
+    - gnome-terminal.x86_64
+    - gnome-terminal-nautilus.x86_64
+    - gnome-themes-standard.x86_64
+    - gnome-tweak-tool.noarch
+    - gnome-user-docs.noarch
+    - gnome-vfs2.x86_64
+    - gnome-vfs2-devel.x86_64
+    - gnome-vfs2-smb.x86_64
+    - gnome-video-effects.noarch
+    - gnome-bluetooth-libs.i686
+    - gnome-desktop3.i686
+    - gnome-dictionary-devel.x86_64
+    - gnome-dictionary-libs.i686
+    - gnome-dictionary-libs.x86_64
+    - gnome-menus.i686
+    - gnome-online-accounts.i686
+    - gnome-packagekit.x86_64
+    - gnome-packagekit-updater.x86_64
+    - gnome-screenshot.x86_64
+    - gnome-shell-browser-plugin.x86_64
+    - gnome-vfs2.i686
+    - gnome-weather.noarch
+    - gnome-weather-tests.noarch
+    - gnome-settings-daemon
+    - metacity
+    - nautilus
+    - xterm
+  xfce4:
+    # XFCE not currently supported here. Not installing.
+    - xterm
+    # - "@Xfce"
+    # - gnome-icon-theme
+    # - gnome-terminal
+    # - firefox
+  mate:
+    # Other mate packages will be installed with amazon-linux-extras
+    - xterm
+
+default_vnc_amazon_linux_extras:
+  mate:
+    - mate-desktop1.x

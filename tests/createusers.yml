@@ -18,6 +18,13 @@
       user:
         name: rocky
       when: ansible_distribution == 'Rocky'
+    - name: create ec2-user
+      user:
+        name: ec2-user
+      when: ansible_distribution == 'Amazon'
+    - name: create john
+      user:
+        name: john
     - name: debug info
       debug:
         msg: "desktop is {{ vnc_desktop }}"

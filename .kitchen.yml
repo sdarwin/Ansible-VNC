@@ -80,11 +80,24 @@ platforms:
   #    image_id: ami-0949556ba850896ed
   #    transport:
   #    username: centos
-  - name: rocky-8
+  # - name: rocky-8
+  #   driver:
+  #   image_id: ami-06e4adca178dfc59a
+  #   transport:
+  #   username: rocky
+  - name: amazon2
     driver:
-    image_id: ami-06e4adca178dfc59a
+    image_id: ami-0e2407e55b9816758
     transport:
-    username: rocky
+      username: ec2-user
+    provisioner:
+      attributes:
+        extra_vars:
+          vnc_testvar: "testz"
+#  - name: tightvnc-gnome
+#    attributes:
+#      extra_vars:
+#        vnc_desktop: gnome
 
 provisioner:
   name: ansible_playbook
@@ -106,28 +119,39 @@ provisioner:
   #   vnc_server: tigervnc
   #
 suites:
-  #   - name: tigervnc-xfce4
-  #     attributes:
-  #       extra_vars:
-  #         vnc_desktop: xfce4
-  #         vnc_server: tigervnc
-  #         default_vnc_users:
-  #           - username: 'admin'
-  #             # usergroup: 'admin'
-  #             # port 5901 is 1
-  #             vnc_num: 1
-  #             vnc_default_password: mypassword
-  #           - username: 'john'
-  #             # port 5902 is 2
-  #             vnc_num: 2
-  #             vnc_default_password: mypassword
-  #             # vnc_client_options_per_user: "-localhost"
-  - name: tigervnc-gnome
+  - name: tigervnc-mate
     attributes:
       extra_vars:
-        vnc_desktop: gnome
+        vnc_desktop: mate
         vnc_server: tigervnc
-#        vnc_install_systemd_services: true
+        default_vnc_users:
+          - username: 'ec2-user'
+            # usergroup: 'admin'
+            # port 5901 is 1
+            vnc_num: 1
+            vnc_default_password: mypassword
+            # - username: 'john'
+            #   # port 5902 is 2
+            #   vnc_num: 2
+            #   vnc_default_password: mypassword
+            #   # vnc_client_options_per_user: "-localhost"
+#   - name: tigervnc-gnome
+#     attributes:
+#       extra_vars:
+#         vnc_desktop: gnome
+#         vnc_server: tigervnc
+#         # vnc_install_systemd_services: true
+#         default_vnc_users:
+#           - username: 'ec2-user'
+#             # usergroup: 'admin'
+#             # port 5901 is 1
+#             vnc_num: 1
+#             vnc_default_password: mypassword
+#             # - username: 'john'
+#             #   # port 5902 is 2
+#             #   vnc_num: 2
+#             #   vnc_default_password: mypassword
+#             #   # vnc_client_options_per_user: "-localhost"
 #  - name: tightvnc-gnome
 #    attributes:
 #      extra_vars:

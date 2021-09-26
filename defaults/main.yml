@@ -61,7 +61,7 @@ vnc_ansible_managed_config: false
 
 ### It has been discovered that an Ubuntu server, in the Cloud, ought to be rebooted at least one time in order to fix the locale settings.
 ### If you set this to True, then Ansible will reboot the server. The default here is False, so you will need to reboot manually.
-### Only affects the systemd type configuration, otherwise not relevant.
+### Only affected the older per-user systemd configurations.
 vnc_reboot_once: false
 
 ### An internal role variable called vnc_paradigm refers to which sort of vnc server you are installing.

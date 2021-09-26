@@ -28,6 +28,10 @@
       user:
         name: centos
       when: ansible_distribution == 'CentOS'
+    - name: create ec2-user
+      user:
+        name: ec2-user
+      when: ansible_distribution == 'Amazon'
     - name: create rocky
       user:
         name: rocky
