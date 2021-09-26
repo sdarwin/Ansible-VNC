@@ -1,5 +1,5 @@
 #!/bin/bash
-# 
+#
 # Install VNC locally, with default settings.
 #
 # Instructions:
@@ -29,7 +29,7 @@ then
   fi
 fi
 
-if ! which ansible 
+if ! which ansible
 then
   if [[ -f /usr/bin/apt-get ]]
   then

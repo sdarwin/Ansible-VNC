@@ -55,31 +55,36 @@ platforms:
   #     image_id: ami-02b20966
   #   transport:
   #     username: ubuntu
-  - name: debian-11
+  # - name: debian-11
+  #   driver:
+  #     image_id: ami-0a1eebd24eb7a0cec
+  #   transport:
+  #     username: admin
+  # - name: debian-10
+  #   driver:
+  #     image_id: ami-037099906a22f210f
+  #   transport:
+  #     username: admin
+  # - name: debian-9.3
+  # driver:
+  # image_id: ami-1545ff71
+  # transport:
+  # username: admin
+  # - name: centos-7.4
+  # driver:
+  # image_id: ami-b111aad5
+  # transport:
+  # username: centos
+  #  - name: centos-8
+  #    driver:
+  #    image_id: ami-0949556ba850896ed
+  #    transport:
+  #    username: centos
+  - name: rocky-8
     driver:
-      image_id: ami-0a1eebd24eb7a0cec
+    image_id: ami-06e4adca178dfc59a
     transport:
-      username: admin
-  - name: debian-10
-    driver:
-      image_id: ami-037099906a22f210f
-    transport:
-      username: admin
-# - name: debian-9.3
-# driver:
-# image_id: ami-1545ff71
-# transport:
-# username: admin
-# - name: centos-7.4
-# driver:
-# image_id: ami-b111aad5
-# transport:
-# username: centos
-#  - name: centos-8
-#    driver:
-#    image_id: ami-0949556ba850896ed
-#    transport:
-#    username: centos
+    username: rocky
 
 provisioner:
   name: ansible_playbook
