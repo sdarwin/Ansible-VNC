@@ -10,7 +10,7 @@
 #     #port 5902 is 2
 #     vnc_num: 2
 #     vnc_default_password: mypassword
-#     vnc_client_options_per_user: "-localhost"
+#     vnc_server_options_per_user: "-localhost"
 #   - username: 'paul'
 #     #port 5903 is 3
 #     vnc_num: 3
@@ -35,7 +35,7 @@ vnc_desktop: gnome
 # vnc_server: tigervnc
 
 # Used with older vnc servers.
-vnc_client_options: "-geometry 1920x1200 -localhost"
+vnc_server_options: "-geometry 1920x1200 -localhost"
 
 # Used by this role on newer tiger vnc servers.
 vnc_config_options:

@@ -4,7 +4,7 @@ Firstly, refer to users-guide.md in this same directory for information about ho
 
 Next, the file defaults/main.yml is self-documented. You should read through it carefully. Consider every variable. Set each variable as appropriate for your server environment. That said, the defaults are generally fine to keep in place. The only thing which really ought to be changed is "vnc_users".
 
-Some VNC servers out-of-the-box will require ssh tunnels because they only listen on localhost. This is a secure configuration, since everything is over an encrypted tunnel. Notice the variable vnc_client_options: "-geometry 1280x720 -localhost". The flag -localhost will instruction VNC to only listen on localhost, if it was not already doing so.
+Some VNC servers out-of-the-box will require ssh tunnels because they only listen on localhost. This is a secure configuration, since everything is over an encrypted tunnel. Notice the variable vnc_server_options: "-geometry 1280x720 -localhost". The flag -localhost will instruction VNC to only listen on localhost, if it was not already doing so.
 
 ### ASSIGNING DESKTOP AND PORT NUMBERS
 

@@ -9,7 +9,7 @@ default_vnc_users:
     # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
-    vnc_client_options_per_user: "-localhost"
+    vnc_server_options_per_user: "-localhost"
 
 default_vnc_desktop_packages:
   gnome:

@@ -1,0 +1,29 @@
+---
+# Earlier versions of the role had variables named:
+# vnc_client_options
+# vnc_client_options_per_user
+# Now changing those variable names to more accurately represent their function:
+# vnc_server_options
+# vnc_server_options_per_user
+# Otherwise they are the same as before.
+# If the earlier variables exist we will assume you have "legacy code" and you are continuing to use the older variables.
+# And, the newer "server" values will be populated with the older so-called "client" values.
+# In order to get up-to-date, you should remove the earlier variables.
+
+- name: Set vnc_server_options
+  set_fact:
+    vnc_server_options: "{{ vnc_client_options }}"
+  when: vnc_client_options is defined
+
+- name: Set vnc_server_options_per_user
+  set_fact:
+    vnc_users_tmp: "{{ vnc_users_tmp | default([]) | union([item | combine({'vnc_server_options_per_user': item.vnc_client_options_per_user | default(item.vnc_server_options_per_user|default(omit)) })]) }}"
+  with_items: "{{ vnc_users }}"
+
+- name: Set vnc_users from tmp var
+  set_fact:
+    vnc_users: "{{ vnc_users_tmp }}"
+
+# - name: debug
+#   ansible.builtin.debug:
+#     msg: "test {{ vnc_users }}"

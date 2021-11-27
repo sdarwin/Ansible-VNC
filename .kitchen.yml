@@ -134,7 +134,7 @@ suites:
             #   # port 5902 is 2
             #   vnc_num: 2
             #   vnc_default_password: mypassword
-            #   # vnc_client_options_per_user: "-localhost"
+            #   # vnc_server_options_per_user: "-localhost"
 #   - name: tigervnc-gnome
 #     attributes:
 #       extra_vars:
@@ -151,7 +151,7 @@ suites:
 #             #   # port 5902 is 2
 #             #   vnc_num: 2
 #             #   vnc_default_password: mypassword
-#             #   # vnc_client_options_per_user: "-localhost"
+#             #   # vnc_server_options_per_user: "-localhost"
 #  - name: tightvnc-gnome
 #    attributes:
 #      extra_vars:

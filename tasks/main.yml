@@ -18,6 +18,9 @@
 
 ##########
 
+- name: Update earlier variable names
+  include: legacy-vars.yml
+
 - name: debug info
   debug:
     msg: "desktop is {{ vnc_desktop }} and server is {{ vnc_server }}"
