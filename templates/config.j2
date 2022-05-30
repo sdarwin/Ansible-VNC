@@ -1,5 +1,9 @@
 {% if vnc_desktop == "gnome" %}
+{% if vnc_desktop_gnome_override is defined and vnc_desktop_gnome_override %}
+session={{ vnc_desktop_gnome_override }}
+{% else %}
 session=gnome
+{% endif %}
 {% elif vnc_desktop == "xfce4" %}
 session=xfce
 {% else %}

@@ -16,6 +16,7 @@ galaxy_info:
         - xenial
         - zesty
         - focal
+        - jammy
     - name: Debian
       versions:
         - jessie

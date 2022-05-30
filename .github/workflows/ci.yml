@@ -7,8 +7,6 @@ name: CI
       - master
       - develop
       - feature/*
-  schedule:
-    - cron: "0 4 * * 3"
 
 defaults:
   run:
@@ -37,7 +35,7 @@ jobs:
         run: |
           set -e
           yamllint .
-          ansible-lint
+          ansible-lint .
 
   molecule:
     name: Molecule
@@ -61,6 +59,8 @@ jobs:
           - distro: ubuntu1804
             playbook: converge.yml
           - distro: ubuntu2004
+            playbook: converge.yml
+          - distro: ubuntu2204
             playbook: converge.yml
           - distro: amazonlinux2
             playbook: converge.yml
