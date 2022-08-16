@@ -19,7 +19,7 @@
 ##########
 
 - name: Update earlier variable names
-  include: legacy-vars.yml
+  import_tasks: legacy-vars.yml
 
 - name: debug info
   debug:
@@ -48,7 +48,7 @@
     - ansible_distribution_version is version_compare('17.10', '==')
 
 - name: add customization for xfce4 RH
-  include: xfce-rh.yml
+  import_tasks: xfce-rh.yml
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "8"
@@ -104,7 +104,8 @@
 - name: Download tigervnc
   get_url:
     url: "{{ vnc_tiger_url }}"
-    dest: "/opt/downloads"
+    dest: "/opt/downloads/"
+    mode: 0755
   when:
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
@@ -268,7 +269,7 @@
       when: vnc_install_systemd_services
 
     - name: include systemd auto-start services
-      include: autostart-perusersystemd.yml
+      import_tasks: autostart-perusersystemd.yml
       when: vnc_install_systemd_services
 
     - name: Set vncstart template
@@ -280,7 +281,7 @@
         vncstoptemplate: vncstop.sh.j2
 
     - name: include basic shell scripts to start services
-      include: autostart-standard.yml
+      import_tasks: autostart-standard.yml
       when: not vnc_install_systemd_services
 
   when: vnc_paradigm == "version1"
@@ -347,6 +348,6 @@
         vncstoptemplate: vncstop-v2.sh.j2
 
     - name: include v2 auto-start services
-      include: autostart-standard.yml
+      import_tasks: autostart-standard.yml
 
   when: vnc_paradigm == "version2"

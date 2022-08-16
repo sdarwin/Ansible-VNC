@@ -17,7 +17,7 @@
 
 - name: Set vnc_server_options_per_user
   set_fact:
-    vnc_users_tmp: "{{ vnc_users_tmp | default([]) | union([item | combine({'vnc_server_options_per_user': item.vnc_client_options_per_user | default(item.vnc_server_options_per_user|default(omit)) })]) }}"
+    vnc_users_tmp: "{{ vnc_users_tmp | default([]) | union([ item | combine({ 'vnc_server_options_per_user' : item.vnc_client_options_per_user | default( item.vnc_server_options_per_user | default(omit) ) })]) }}"
   with_items: "{{ vnc_users }}"
 
 - name: Set vnc_users from tmp var
