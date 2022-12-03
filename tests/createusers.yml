@@ -3,31 +3,31 @@
   become: true
   tasks:
     - name: create ubuntu
-      user:
+      ansible.builtin.user:
         name: ubuntu
       when: ansible_distribution == 'Ubuntu'
     - name: create admin
-      user:
+      ansible.builtin.user:
         name: admin
       when: ansible_distribution == 'Debian'
     - name: create centos
-      user:
+      ansible.builtin.user:
         name: centos
       when: ansible_distribution == 'CentOS'
     - name: create rocky
-      user:
+      ansible.builtin.user:
         name: rocky
       when: ansible_distribution == 'Rocky'
     - name: create ec2-user
-      user:
+      ansible.builtin.user:
         name: ec2-user
       when: ansible_distribution == 'Amazon'
     - name: create john
-      user:
+      ansible.builtin.user:
         name: john
     - name: debug info
-      debug:
+      ansible.builtin.debug:
         msg: "desktop is {{ vnc_desktop }}"
     - name: debug info 2
-      debug:
+      ansible.builtin.debug:
         msg: "server is {{ vnc_server }}"

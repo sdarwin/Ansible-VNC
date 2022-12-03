@@ -89,7 +89,7 @@ platforms:
     driver:
     image_id: ami-0e2407e55b9816758
     transport:
-      username: ec2-user
+      ansible.builtin.username: ec2-user
     provisioner:
       attributes:
         extra_vars:

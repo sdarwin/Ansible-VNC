@@ -1,12 +1,12 @@
 ---
-- name: checking existence of per-user basic scripts to start vnc
-  stat:
+- name: Checking existence of per-user basic scripts to start vnc
+  ansible.builtin.stat:
     path: "/home/{{ item.username }}/vncstart.sh"
   register: checkvncstart
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to start vnc
-  template:
+  ansible.builtin.template:
     src: "{{ vncstarttemplate }}"
     dest: "/home/{{ item.item.username }}/vncstart.sh"
     mode: 0755
@@ -16,14 +16,14 @@
     - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checkvncstart.results }}"
 
-- name: checking existence of per-user basic scripts to stop vnc
-  stat:
+- name: Checking existence of per-user basic scripts to stop vnc
+  ansible.builtin.stat:
     path: "/home/{{ item.username }}/vncstop.sh"
   register: checkvncstop
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to stop vnc
-  template:
+  ansible.builtin.template:
     src: "{{ vncstoptemplate }}"
     dest: "/home/{{ item.item.username }}/vncstop.sh"
     mode: 0755
@@ -34,8 +34,8 @@
   with_items: "{{ checkvncstop.results }}"
 
 
-- name: create ansible folder, if not already there. For next steps.
-  file:
+- name: Create ansible folder, if not already there. For next steps.
+  ansible.builtin.file:
     path: /etc/ansible
     state: directory
     mode: 0755
@@ -43,20 +43,20 @@
     group: root
 
 - name: Ubuntu16.04/Systemd/Cloud combination requires minimum one reboot, regardless of ansible, in order for this to work.
-  shell: touch /etc/ansible/rebooted-once.txt  # noqa 305
+  ansible.builtin.shell: touch /etc/ansible/rebooted-once.txt  # noqa command-instead-of-shell
   args:
     chdir: /etc/ansible
     creates: /etc/ansible/rebooted-once.txt
   notify:
-    - reboot once
-    - reboot message
+    - Reboot once
+    - Reboot message
 
-- name: enable persistent services per user
-  shell: /bin/loginctl enable-linger {{ item.username }}  # noqa 301 305
+- name: Enable persistent services per user
+  ansible.builtin.shell: /bin/loginctl enable-linger {{ item.username }}  # noqa no-changed-when command-instead-of-shell
   with_items: "{{ vnc_users }}"
 
-- name: create systemd directories
-  file:
+- name: Create systemd directories
+  ansible.builtin.file:
     path: "/home/{{ item.username }}/.config/systemd/user"
     state: directory
     mode: 0755
@@ -64,14 +64,14 @@
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
-- name: checking existence of per-user systemd service files
-  stat:
+- name: Checking existence of per-user systemd service files
+  ansible.builtin.stat:
     path: "/home/{{ item.username }}/.config/systemd/user/vncserver.service"
   register: checksystemd
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user systemd service files
-  template:
+  ansible.builtin.template:
     src: vncserver.j2
     dest: "/home/{{ item.item.username }}/.config/systemd/user/vncserver.service"
     mode: 0644
@@ -81,14 +81,14 @@
     - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checksystemd.results }}"
 
-- name: systemctl daemon-reload
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}  # noqa 204 301
+- name: Run systemctl daemon-reload
+  ansible.builtin.shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user daemon-reload' {{ item.username }}  # noqa 204 no-changed-when
   with_items: "{{ vnc_users }}"
 
-- name: systemctl enable
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}  # noqa 204 301
+- name: Run systemctl enable
+  ansible.builtin.shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user enable vncserver' {{ item.username }}  # noqa 204 no-changed-when
   with_items: "{{ vnc_users }}"
 
-- name: systemctl start
-  shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}  # noqa 204 301
+- name: Run systemctl start
+  ansible.builtin.shell: su -c 'XDG_RUNTIME_DIR="/run/user/$(id -u)" DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus" systemctl --user start vncserver' {{ item.username }}  # noqa 204 no-changed-when
   with_items: "{{ vnc_users }}"

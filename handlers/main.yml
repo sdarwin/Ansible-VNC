@@ -1,6 +1,6 @@
 ---
-- name: reboot message
-  debug:
+- name: Reboot message
+  ansible.builtin.debug:
     msg:
       - "***********************"
       - " "
@@ -10,8 +10,8 @@
   when:
     - vnc_reboot_once is not defined or not vnc_reboot_once
 
-- name: reboot once
-  shell: reboot  # noqa 305
+- name: Reboot once
+  ansible.builtin.shell: reboot  # noqa command-instead-of-shell
   args:
     chdir: /
   when:

@@ -1,12 +1,12 @@
 ---
-- name: checking existence of per-user basic scripts to start vnc
-  stat:
+- name: Checking existence of per-user basic scripts to start vnc
+  ansible.builtin.stat:
     path: "/home/{{ item.username }}/vncstart.sh"
   register: checkvncstart
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to start vnc
-  template:
+  ansible.builtin.template:
     src: "{{ vncstarttemplate }}"
     dest: "/home/{{ item.item.username }}/vncstart.sh"
     mode: 0755
@@ -16,14 +16,14 @@
     - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checkvncstart.results }}"
 
-- name: checking existence of per-user basic scripts to stop vnc
-  stat:
+- name: Checking existence of per-user basic scripts to stop vnc
+  ansible.builtin.stat:
     path: "/home/{{ item.username }}/vncstop.sh"
   register: checkvncstop
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to stop vnc
-  template:
+  ansible.builtin.template:
     src: "{{ vncstoptemplate }}"
     dest: "/home/{{ item.item.username }}/vncstop.sh"
     mode: 0755
@@ -34,8 +34,8 @@
   with_items: "{{ checkvncstop.results }}"
 
 # Nautilus error. Unable to create a required folder.
-- name: create .config directories.
-  file:
+- name: Create .config directories.
+  ansible.builtin.file:
     path: "/home/{{ item.username }}/.config"
     state: directory
     mode: 0700
@@ -43,16 +43,16 @@
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
-- name: add vncstart.sh to .bashrc for each user
-  lineinfile:
+- name: Add vncstart.sh to .bashrc for each user
+  ansible.builtin.lineinfile:
     path: "/home/{{ item.username }}/.bashrc"
     line: /home/{{ item.username }}/vncstart.sh 2> /dev/null
   when:
     - vnc_bashrc_startup
   with_items: "{{ vnc_users }}"
 
-- name: start vnc for each user
-  shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}  # noqa 301 305
+- name: Start vnc for each user
+  ansible.builtin.shell: su -c '/home/{{ item.username }}/vncstart.sh' {{ item.username }}  # noqa command-instead-of-shell
   with_items: "{{ vnc_users }}"
   changed_when: false
   failed_when: false

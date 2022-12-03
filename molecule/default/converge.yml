@@ -5,40 +5,42 @@
 
   pre_tasks:
     - name: Run whoami without become.
-      command: whoami
+      ansible.builtin.command: whoami
       changed_when: false
       become: false
       register: whoami
-    - name: print whoami
-      debug:
+    - name: Print whoami
+      ansible.builtin.debug:
         var: whoami
         verbosity: 4
     - name: Update apt cache.
-      apt: update_cache=yes cache_valid_time=600
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 600
       when: ansible_os_family == 'Debian'
-    - name: create ubuntu
-      user:
+    - name: Create ubuntu
+      ansible.builtin.user:
         name: ubuntu
       when: ansible_distribution == 'Ubuntu'
-    - name: create admin
-      user:
+    - name: Create admin
+      ansible.builtin.user:
         name: admin
       when: ansible_distribution == 'Debian'
-    - name: create centos
-      user:
+    - name: Create centos
+      ansible.builtin.user:
         name: centos
       when: ansible_distribution == 'CentOS'
-    - name: create ec2-user
-      user:
+    - name: Create ec2-user
+      ansible.builtin.user:
         name: ec2-user
       when: ansible_distribution == 'Amazon'
-    - name: create rocky
-      user:
+    - name: Create rocky
+      ansible.builtin.user:
         name: rocky
       when: ansible_distribution == 'Rocky'
 
-    - name: Wait for systemd to complete initialization.  # noqa 303
-      command: systemctl is-system-running
+    - name: Wait for systemd to complete initialization.  # noqa command-instead-of-module
+      ansible.builtin.command: systemctl is-system-running
       register: systemctl_status
       until: >
         'running' in systemctl_status.stdout or
@@ -48,8 +50,8 @@
       when: ansible_service_mgr == 'systemd'
       changed_when: false
       failed_when: systemctl_status.rc > 1
-    - name: fix coreutils-single on containers
-      command: dnf install -y --allowerasing coreutils
+    - name: Fix coreutils-single on containers
+      ansible.builtin.command: dnf install -y --allowerasing coreutils
       when:
         - ansible_os_family == 'RedHat'
         - ansible_distribution_major_version| int > 7

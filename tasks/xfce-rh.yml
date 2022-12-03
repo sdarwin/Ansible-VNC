@@ -4,23 +4,23 @@
 #
 # Because RHEL itself doesn't have the PowerTools repo, and so the gtk-doc package doesn't install, this fix only works for CentOS. Not for RedHat.
 
-- name: enable PowerTools
+- name: Enable PowerTools
   changed_when: false
   args:
     warn: false
-  shell:
-    cmd: dnf config-manager --set-enabled PowerTools  # noqa 305
+  ansible.builtin.shell:
+    cmd: dnf config-manager --set-enabled PowerTools  # noqa command-instead-of-shell
   when:
     - ansible_distribution == "CentOS"
 
-- name: install sauronlenoir repo
-  package:
+- name: Install sauronlenoir repo
+  ansible.builtin.package:
     name: https://sauronlenoir.be/repo/rpm/sauronlenoir-release-1-0.el8.noarch.rpm
     state: present
     update_cache: true
 
-- name: install xfce4 screensaver
-  package:
+- name: Install xfce4 screensaver
+  ansible.builtin.package:
     name: http://download-ib01.fedoraproject.org/pub/fedora/linux/updates/29/Everything/x86_64/Packages/x/xfce4-screensaver-0.1.4-1.fc29.x86_64.rpm
     state: present
     update_cache: true

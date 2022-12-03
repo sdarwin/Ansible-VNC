@@ -2,13 +2,13 @@
 # Include Variables ##########
 
 - name: Include OS-specific variables.
-  include_vars: "{{ ansible_os_family }}-family.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}-family.yml"
 
 - name: Include Distribution version specific variables
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
 
-- name: set facts based on defaults  # noqa var-naming
-  set_fact:
+- name: Set facts based on defaults  # noqa var-naming
+  ansible.builtin.set_fact:
     "{{ item[8:] }}": "{{ lookup('vars', item) }}"
   when:
     - item is match("^default_")
@@ -19,42 +19,42 @@
 ##########
 
 - name: Update earlier variable names
-  import_tasks: legacy-vars.yml
+  ansible.builtin.import_tasks: legacy-vars.yml
 
-- name: debug info
-  debug:
+- name: Debug info
+  ansible.builtin.debug:
     msg: "desktop is {{ vnc_desktop }} and server is {{ vnc_server }}"
 
-- name: fix test-kitchen
-  file:
+- name: Fix test-kitchen
+  ansible.builtin.file:
     path: /tmp/kitchen
     state: directory
     recurse: true
     mode: 0775
 
-- name: fix Ubuntu 17.10 bug, 1
-  package:
+- name: Fix Ubuntu 17.10 bug, 1
+  ansible.builtin.package:
     name: network-manager
     state: present
     update_cache: true
   when:
     - ansible_distribution_version is version_compare('17.10', '==')
 
-- name: fix Ubuntu 17.10 bug, 2
-  service:
+- name: Fix Ubuntu 17.10 bug, 2
+  ansible.builtin.service:
     name: NetworkManager
     state: started
   when:
     - ansible_distribution_version is version_compare('17.10', '==')
 
-- name: add customization for xfce4 RH
-  import_tasks: xfce-rh.yml
+- name: Add customization for xfce4 RH
+  ansible.builtin.import_tasks: xfce-rh.yml
   when:
     - ansible_os_family == "RedHat"
     - ansible_distribution_major_version == "8"
     - vnc_desktop == "xfce4"
 
-- name: install epel gpg key
+- name: Install epel gpg key
   ansible.builtin.rpm_key:
     state: present
     key: http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
@@ -65,30 +65,30 @@
 #   when:
 #     - ansible_os_family == "RedHat"
 
-- name: install general packages
-  package:
+- name: Install general packages
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: true
   with_items: "{{ vnc_general_packages }}"
 
-- name: install amazon-linux-extras packages
-  command: "amazon-linux-extras install -y {{ item }}"
+- name: Install amazon-linux-extras packages
+  ansible.builtin.command: "amazon-linux-extras install -y {{ item }}"
   with_items: "{{ vnc_amazon_linux_extras[vnc_desktop] }}"
   when:
     - ansible_distribution == "Amazon"
     - vnc_amazon_linux_extras is defined
     - vnc_amazon_linux_extras[vnc_desktop] is defined
 
-- name: install desktop packages
-  package:
+- name: Install desktop packages
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: true
   with_items: "{{ vnc_desktop_packages[vnc_desktop] }}"
 
-- name: install vnc_server packages
-  package:
+- name: Install vnc_server packages
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: true
@@ -96,13 +96,13 @@
 
 # Tigervnc must be downloaded for Ubuntu 16
 - name: Create downloads dir
-  file:
+  ansible.builtin.file:
     path: "/opt/downloads"
     state: directory
     mode: 0755
 
 - name: Download tigervnc
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ vnc_tiger_url }}"
     dest: "/opt/downloads/"
     mode: 0755
@@ -111,8 +111,8 @@
     - vnc_server == "tigervnc"
     - ansible_distribution_major_version == "16"
 
-- name: install tigervnc
-  shell: apt install -y "/opt/downloads/{{ vnc_tiger_file }}"  # noqa 305
+- name: Install tigervnc
+  ansible.builtin.shell: apt install -y "/opt/downloads/{{ vnc_tiger_file }}"  # noqa command-instead-of-shell
   when:
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
@@ -120,7 +120,7 @@
   changed_when: false
 
 - name: Create .vnc dirs
-  file:
+  ansible.builtin.file:
     path: "/home/{{ item.username }}/.vnc"
     state: directory
     mode: 0755
@@ -129,7 +129,7 @@
   with_items: "{{ vnc_users }}"
 
 - name: Set vnc passwords tightvnc
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     echo {{ item.vnc_default_password }} | vncpasswd -f > /home/{{ item.username }}/.vnc/passwd
   args:
@@ -140,7 +140,7 @@
   when: vnc_server == "tightvnc"
 
 - name: Set vnc passwords vnc4server, tigervnc
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     printf "{{ item.vnc_default_password }}\n{{ item.vnc_default_password }}\n\n" | vncpasswd /home/{{ item.username }}/.vnc/passwd
   args:
@@ -151,7 +151,7 @@
   when: vnc_server == "vnc4server" or vnc_server == "tigervnc"
 
 - name: Set perms on vnc passwords
-  file:
+  ansible.builtin.file:
     path: "/home/{{ item.username }}/.vnc/passwd"
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
@@ -165,12 +165,12 @@
     manager: auto
 
 - name: Set tiger version redhat
-  set_fact:
+  ansible.builtin.set_fact:
     tiger_ver_installed: "{{ ansible_facts.packages['tigervnc-server'][0].version }}"
   when: "'tigervnc-server' in ansible_facts.packages"
 
 - name: Set tiger version debian
-  set_fact:
+  ansible.builtin.set_fact:
     tiger_ver_installed: "{{ ansible_facts.packages['tigervnc-standalone-server'][0].version }}"
   when: "'tigervnc-standalone-server' in ansible_facts.packages"
 
@@ -179,18 +179,18 @@
     var: tiger_ver_installed
 
 - name: Set fact, type of install 1
-  set_fact:
+  ansible.builtin.set_fact:
     vnc_paradigm: "version1"
 
 - name: Set fact, type of install 2
-  set_fact:
+  ansible.builtin.set_fact:
     vnc_paradigm: "version2"
   when:
     - tiger_ver_installed is defined
     - tiger_ver_installed is version('1.11.0', '>=')
 
 - name: Set fact, type of install 3
-  set_fact:
+  ansible.builtin.set_fact:
     vnc_paradigm: "{{ vnc_paradigm_override }}"
   when: vnc_paradigm_override is defined
 
@@ -200,16 +200,17 @@
 
 ####################################################################################
 #
-- name: vnc_paradigm version1
+- name: The vnc_paradigm version1 section
+  when: vnc_paradigm == "version1"
   block:
-    - name: checking existence of xstartup files
-      stat:
+    - name: Checking existence of xstartup files
+      ansible.builtin.stat:
         path: "/home/{{ item.username }}/.vnc/xstartup"
       register: checkxstartup
       with_items: "{{ vnc_users }}"
 
     - name: Update "xstartup" file
-      template:
+      ansible.builtin.template:
         src: xstartup.j2
         dest: "/home/{{ item.item.username }}/.vnc/xstartup"
         mode: 0755
@@ -220,14 +221,14 @@
       with_items: "{{ checkxstartup.results }}"
 
     # the file .dmrc is currently for Redhat/Centos
-    - name: checking existence of .dmrc files
-      stat:
+    - name: Checking existence of .dmrc files
+      ansible.builtin.stat:
         path: "/home/{{ item.username }}/.dmrc"
       register: checkdmrc
       with_items: "{{ vnc_users }}"
 
     - name: Update .dmrc file
-      template:
+      ansible.builtin.template:
         src: dmrc.j2
         dest: "/home/{{ item.item.username }}/.dmrc"
         mode: 0755
@@ -238,7 +239,7 @@
       with_items: "{{ checkdmrc.results }}"
 
     - name: Create /etc/sysconfig dir
-      file:
+      ansible.builtin.file:
         path: /etc/sysconfig
         mode: 0755
         owner: root
@@ -248,7 +249,7 @@
         - ansible_os_family == 'RedHat'
 
     - name: Define mate desktop
-      template:
+      ansible.builtin.template:
         src: matedesktop.j2
         dest: /etc/sysconfig/desktop
         mode: 0644
@@ -259,36 +260,35 @@
         - ansible_os_family == 'RedHat'
 
     - name: Set vncstart template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstarttemplate: vncstart-perusersystemd.sh.j2
       when: vnc_install_systemd_services
 
     - name: Set vncstop template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstoptemplate: vncstop-perusersystemd.sh.j2
       when: vnc_install_systemd_services
 
-    - name: include systemd auto-start services
-      import_tasks: autostart-perusersystemd.yml
+    - name: Include systemd auto-start services
+      ansible.builtin.import_tasks: autostart-perusersystemd.yml
       when: vnc_install_systemd_services
 
     - name: Set vncstart template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstarttemplate: vncstart.sh.j2
 
     - name: Set vncstop template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstoptemplate: vncstop.sh.j2
 
-    - name: include basic shell scripts to start services
-      import_tasks: autostart-standard.yml
+    - name: Include basic shell scripts to start services
+      ansible.builtin.import_tasks: autostart-standard.yml
       when: not vnc_install_systemd_services
-
-  when: vnc_paradigm == "version1"
 
 ##############################################################################################
 
-- name: vnc_paradigm version2
+- name: The vnc_paradigm version2 section
+  when: vnc_paradigm == "version2"
   block:
     ## Consider adding this kind of functionality back later. It's useful. However supposedly xstartup is deprecated.
     # - name: checking existence of xstartup files
@@ -296,22 +296,22 @@
     # - name: checking existence of .dmrc files
     # - name: Update .dmrc file
 
-    - name: vncserver.users file
-      template:
+    - name: Create vncserver.users file
+      ansible.builtin.template:
         src: vncserver.users.j2
         dest: /etc/tigervnc/vncserver.users
         mode: 0644
         owner: root
         group: root
 
-    - name: checking existence of per-user .vnc/config
-      stat:
+    - name: Checking existence of per-user .vnc/config
+      ansible.builtin.stat:
         path: "/home/{{ item.username }}/vnc/config"
       register: checkvncconfig
       with_items: "{{ vnc_users }}"
 
     - name: Update per-user .vnc/config
-      template:
+      ansible.builtin.template:
         src: config.j2
         dest: "/home/{{ item.item.username }}/.vnc/config"
         mode: 0755
@@ -328,7 +328,7 @@
         enabled: true
       with_items: "{{ vnc_users }}"
 
-    - name: allow users to start their vnc session with sudo
+    - name: Allow users to start their vnc session with sudo
       ansible.builtin.lineinfile:
         path: "/etc/sudoers.d/{{ item.username }}"
         # yamllint disable-line rule:line-length
@@ -340,14 +340,12 @@
       with_items: "{{ vnc_users }}"
 
     - name: Set vncstart template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstarttemplate: vncstart-v2.sh.j2
 
     - name: Set vncstop template
-      set_fact:
+      ansible.builtin.set_fact:
         vncstoptemplate: vncstop-v2.sh.j2
 
-    - name: include v2 auto-start services
-      import_tasks: autostart-standard.yml
-
-  when: vnc_paradigm == "version2"
+    - name: Include v2 auto-start services
+      ansible.builtin.import_tasks: autostart-standard.yml
