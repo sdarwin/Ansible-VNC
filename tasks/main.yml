@@ -119,20 +119,22 @@
     - ansible_distribution_major_version == "16"
   changed_when: false
 
-- name: Create VNC groups
-  group:
-    name: "{{ item.usergroup }}"
-    state: present
-  loop: "{{ vnc_users }}"
+- name: Create VNC group and user
+  when: vnc_create_users
+  block:
+    - name: Create VNC group
+      ansible.builtin.group:
+        name: "{{ item.usergroup }}"
+        state: present
+      loop: "{{ vnc_users }}"
 
-- name: Create VNC users
-  user:
-    name: "{{ item.username }}"
-    group: "{{ item.usergroup }}"
-    password: '$6$/mv0Ko8F9CuOexi2$5FWBC6I7ZtavJW3Dxfm9bGLC277L5R65253AQC5obbv57.ZpcJyFy8Ac7Rhg1/seiqubhRVI/hVrcb21SxCcg0' # password is admin123. You can set encrypted passwd in vnc_users section and use variable "{{ item.vnc_default_password}}"
-    shell: /bin/bash
-    skeleton: /etc/skel
-  loop: "{{ vnc_users }}"
+    - name: Create VNC users
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        group: "{{ item.usergroup }}"
+        shell: /bin/bash
+        skeleton: /etc/skel
+      loop: "{{ vnc_users }}"
 
 - name: Create .vnc dirs
   ansible.builtin.file:

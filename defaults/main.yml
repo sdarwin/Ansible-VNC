@@ -69,3 +69,6 @@ vnc_reboot_once: false
 ### version2: tigervnc 1.11.0 and later. Runs vnc as a systemd service.
 ### You can override/set the variable with vnc_paradigm_override to "version1" or "version2". However, it should be automatically determined so you don't need to change this.
 # vnc_paradigm_override: version1
+
+### Optionally create groups and users. By default 'false'
+vnc_create_users: false
