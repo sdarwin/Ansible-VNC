@@ -129,6 +129,7 @@
   user:
     name: "{{ item.username }}"
     group: "{{ item.usergroup }}"
+    password: '$6$/mv0Ko8F9CuOexi2$5FWBC6I7ZtavJW3Dxfm9bGLC277L5R65253AQC5obbv57.ZpcJyFy8Ac7Rhg1/seiqubhRVI/hVrcb21SxCcg0' # password is admin123. You can set encrypted passwd in vnc_users section and use variable "{{ item.vnc_default_password}}"
     shell: /bin/bash
     skeleton: /etc/skel
   loop: "{{ vnc_users }}"
