@@ -70,5 +70,6 @@ vnc_reboot_once: false
 ### You can override/set the variable with vnc_paradigm_override to "version1" or "version2". However, it should be automatically determined so you don't need to change this.
 # vnc_paradigm_override: version1
 
-### Optionally create groups and users. By default 'false'
+### Optionally create Linux groups and users. By default 'false'
+### The users in vnc_users must already exist as user accounts in the operating system for the role to work. Create them ahead of time, or set this variable.
 vnc_create_users: false
