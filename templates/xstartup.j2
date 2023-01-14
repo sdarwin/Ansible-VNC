@@ -30,6 +30,7 @@ exec /etc/X11/xinit/xinitrc
 {% elif vnc_desktop == "mate" and ansible_os_family == "Debian" %}
 # need to define
 {% elif vnc_desktop == "xfce4" %}
+xfce4-panel &
 startxfce4
 {% else %}
 {# gnome on debian as the default #}

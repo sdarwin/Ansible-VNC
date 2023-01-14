@@ -119,6 +119,23 @@
     - ansible_distribution_major_version == "16"
   changed_when: false
 
+- name: Create VNC group and user
+  when: vnc_create_users
+  block:
+    - name: Create VNC group
+      ansible.builtin.group:
+        name: "{{ item.usergroup }}"
+        state: present
+      loop: "{{ vnc_users }}"
+
+    - name: Create VNC users
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        group: "{{ item.usergroup }}"
+        shell: /bin/bash
+        skeleton: /etc/skel
+      loop: "{{ vnc_users }}"
+
 - name: Create .vnc dirs
   ansible.builtin.file:
     path: "/home/{{ item.username }}/.vnc"
