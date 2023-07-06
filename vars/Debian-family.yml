@@ -36,12 +36,12 @@ default_vnc_server_packages:
 
 # default_vnc_tiger_url: "https://bintray.com/tigervnc/stable/download_file?file_path=ubuntu-16.04LTS%2Famd64%2Ftigervncserver_1.8.0-1ubuntu1_amd64.deb"
 # default_vnc_tiger_file: "tigervncserver_1.8.0-1ubuntu1_amd64.deb"
-default_vnc_tiger_url: "https://downloads.sourceforge.net/project/tigervnc/stable/1.10.1/ubuntu-16.04LTS/amd64/tigervncserver_1.10.1-1ubuntu1_amd64.deb"
-default_vnc_tiger_file: "tigervncserver_1.10.1-1ubuntu1_amd64.deb"
+default_vnc_tiger_url: https://downloads.sourceforge.net/project/tigervnc/stable/1.10.1/ubuntu-16.04LTS/amd64/tigervncserver_1.10.1-1ubuntu1_amd64.deb
+default_vnc_tiger_file: tigervncserver_1.10.1-1ubuntu1_amd64.deb
 
 default_vnc_install_systemd_services: true
 default_vnc_ansible_managed_startup_scripts: false
 
 default_xstartup_additional_command1: ""
 
-default_vnc_systemd_service_name: "tigervncserver"
+default_vnc_systemd_service_name: tigervncserver

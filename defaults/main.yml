@@ -35,12 +35,12 @@ vnc_desktop: gnome
 # vnc_server: tigervnc
 
 # Used with older vnc servers.
-vnc_server_options: "-geometry 1920x1200 -localhost"
+vnc_server_options: -geometry 1920x1200 -localhost
 
 # Used by this role on newer tiger vnc servers.
 vnc_config_options:
-  - "geometry=1920x1200"
-  - "localhost"
+  - geometry=1920x1200
+  - localhost
 
 ### Should the role generate and enable per-user systemd services for VNC desktops?
 ### This variable refers to a previous implementation of per-user systemd, before the newer TigerVNC update, where standard systemd is used.

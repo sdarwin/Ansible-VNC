@@ -13,8 +13,7 @@
   when:
     - item is match("^default_")
     - vars[item[8:]] is not defined
-  with_items:
-    "{{ vars | list }}"
+  with_items: "{{ vars | list }}"
 
 ##########
 
@@ -23,14 +22,14 @@
 
 - name: Debug info
   ansible.builtin.debug:
-    msg: "desktop is {{ vnc_desktop }} and server is {{ vnc_server }}"
+    msg: desktop is {{ vnc_desktop }} and server is {{ vnc_server }}
 
 - name: Fix test-kitchen
   ansible.builtin.file:
     path: /tmp/kitchen
     state: directory
     recurse: true
-    mode: 0775
+    mode: "0775"
 
 - name: Fix Ubuntu 17.10 bug, 1
   ansible.builtin.package:
@@ -73,8 +72,9 @@
   with_items: "{{ vnc_general_packages }}"
 
 - name: Install amazon-linux-extras packages
-  ansible.builtin.command: "amazon-linux-extras install -y {{ item }}"
+  ansible.builtin.command: amazon-linux-extras install -y {{ item }}
   with_items: "{{ vnc_amazon_linux_extras[vnc_desktop] }}"
+  changed_when: true
   when:
     - ansible_distribution == "Amazon"
     - vnc_amazon_linux_extras is defined
@@ -97,15 +97,15 @@
 # Tigervnc must be downloaded for Ubuntu 16
 - name: Create downloads dir
   ansible.builtin.file:
-    path: "/opt/downloads"
+    path: /opt/downloads
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Download tigervnc
   ansible.builtin.get_url:
     url: "{{ vnc_tiger_url }}"
-    dest: "/opt/downloads/"
-    mode: 0755
+    dest: /opt/downloads/
+    mode: "0755"
   when:
     - ansible_distribution == "Ubuntu"
     - vnc_server == "tigervnc"
@@ -138,9 +138,9 @@
 
 - name: Create .vnc dirs
   ansible.builtin.file:
-    path: "/home/{{ item.username }}/.vnc"
+    path: /home/{{ item.username }}/.vnc
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
@@ -150,8 +150,8 @@
     set -o pipefail
     echo {{ item.vnc_default_password }} | vncpasswd -f > /home/{{ item.username }}/.vnc/passwd
   args:
-    chdir: "/home/{{ item.username }}/.vnc"
-    creates: "/home/{{ item.username }}/.vnc/passwd"
+    chdir: /home/{{ item.username }}/.vnc
+    creates: /home/{{ item.username }}/.vnc/passwd
     executable: /bin/bash
   with_items: "{{ vnc_users }}"
   when: vnc_server == "tightvnc"
@@ -161,18 +161,18 @@
     set -o pipefail
     printf "{{ item.vnc_default_password }}\n{{ item.vnc_default_password }}\n\n" | vncpasswd /home/{{ item.username }}/.vnc/passwd
   args:
-    chdir: "/home/{{ item.username }}/.vnc"
-    creates: "/home/{{ item.username }}/.vnc/passwd"
+    chdir: /home/{{ item.username }}/.vnc
+    creates: /home/{{ item.username }}/.vnc/passwd
     executable: /bin/bash
   with_items: "{{ vnc_users }}"
   when: vnc_server == "vnc4server" or vnc_server == "tigervnc"
 
 - name: Set perms on vnc passwords
   ansible.builtin.file:
-    path: "/home/{{ item.username }}/.vnc/passwd"
+    path: /home/{{ item.username }}/.vnc/passwd
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
-    mode: 0700
+    mode: "0700"
   with_items: "{{ vnc_users }}"
 
 ####################################################################################
@@ -197,11 +197,11 @@
 
 - name: Set fact, type of install 1
   ansible.builtin.set_fact:
-    vnc_paradigm: "version1"
+    vnc_paradigm: version1
 
 - name: Set fact, type of install 2
   ansible.builtin.set_fact:
-    vnc_paradigm: "version2"
+    vnc_paradigm: version2
   when:
     - tiger_ver_installed is defined
     - tiger_ver_installed is version('1.11.0', '>=')
@@ -222,15 +222,15 @@
   block:
     - name: Checking existence of xstartup files
       ansible.builtin.stat:
-        path: "/home/{{ item.username }}/.vnc/xstartup"
+        path: /home/{{ item.username }}/.vnc/xstartup
       register: checkxstartup
       with_items: "{{ vnc_users }}"
 
     - name: Update "xstartup" file
       ansible.builtin.template:
         src: xstartup.j2
-        dest: "/home/{{ item.item.username }}/.vnc/xstartup"
-        mode: 0755
+        dest: /home/{{ item.item.username }}/.vnc/xstartup
+        mode: "0755"
         owner: "{{ item.item.username }}"
         group: "{{ item.item.usergroup | default(item.item.username) }}"
       when:
@@ -240,15 +240,15 @@
     # the file .dmrc is currently for Redhat/Centos
     - name: Checking existence of .dmrc files
       ansible.builtin.stat:
-        path: "/home/{{ item.username }}/.dmrc"
+        path: /home/{{ item.username }}/.dmrc
       register: checkdmrc
       with_items: "{{ vnc_users }}"
 
     - name: Update .dmrc file
       ansible.builtin.template:
         src: dmrc.j2
-        dest: "/home/{{ item.item.username }}/.dmrc"
-        mode: 0755
+        dest: /home/{{ item.item.username }}/.dmrc
+        mode: "0755"
         owner: "{{ item.item.username }}"
         group: "{{ item.item.usergroup | default(item.item.username) }}"
       when:
@@ -258,7 +258,7 @@
     - name: Create /etc/sysconfig dir
       ansible.builtin.file:
         path: /etc/sysconfig
-        mode: 0755
+        mode: "0755"
         owner: root
         group: root
         state: directory
@@ -269,7 +269,7 @@
       ansible.builtin.template:
         src: matedesktop.j2
         dest: /etc/sysconfig/desktop
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       when:
@@ -317,27 +317,26 @@
       ansible.builtin.template:
         src: vncserver.users.j2
         dest: /etc/tigervnc/vncserver.users
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
 
     - name: Checking existence of per-user .vnc/config
       ansible.builtin.stat:
-        path: "/home/{{ item.username }}/vnc/config"
+        path: /home/{{ item.username }}/vnc/config
       register: checkvncconfig
       with_items: "{{ vnc_users }}"
 
     - name: Update per-user .vnc/config
       ansible.builtin.template:
         src: config.j2
-        dest: "/home/{{ item.item.username }}/.vnc/config"
-        mode: 0755
+        dest: /home/{{ item.item.username }}/.vnc/config
+        mode: "0755"
         owner: "{{ item.item.username }}"
         group: "{{ item.item.usergroup | default(item.item.username) }}"
       when:
         - vnc_ansible_managed_config or not item.stat.exists
       with_items: "{{ checkvncconfig.results }}"
-
 
     - name: Enable vnc systemd service for each user
       ansible.builtin.systemd:
@@ -347,12 +346,12 @@
 
     - name: Allow users to start their vnc session with sudo
       ansible.builtin.lineinfile:
-        path: "/etc/sudoers.d/{{ item.username }}"
+        path: /etc/sudoers.d/{{ item.username }}
         # yamllint disable-line rule:line-length
         line: "{{ item.username }} ALL = NOPASSWD: /bin/systemctl start tigervncserver@\\:{{ item.vnc_num }}.service, /bin/systemctl stop tigervncserver@\\:{{ item.vnc_num }}.service, /bin/systemctl status tigervncserver@\\:{{ item.vnc_num }}.service"
         owner: root
         group: root
-        mode: '0440'
+        mode: "0440"
         create: true
       with_items: "{{ vnc_users }}"
 

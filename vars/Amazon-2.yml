@@ -4,12 +4,12 @@ default_vnc_general_packages:
   - net-tools
 
 default_vnc_users:
-  - username: 'ec2-user'
-    usergroup: 'ec2-user'
+  - username: ec2-user
+    usergroup: ec2-user
     # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
-    vnc_server_options_per_user: "-localhost"
+    vnc_server_options_per_user: -localhost
 
 default_vnc_desktop_packages:
   gnome:

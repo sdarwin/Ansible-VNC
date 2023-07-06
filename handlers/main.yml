@@ -4,7 +4,7 @@
     msg:
       - "***********************"
       - " "
-      - "You should reboot this server {{ inventory_hostname }}, as a one-time action, if it hasn't ever been rebooted."
+      - You should reboot this server {{ inventory_hostname }}, as a one-time action, if it hasn't ever been rebooted.
       - " "
       - "***********************"
   when:
@@ -12,6 +12,7 @@
 
 - name: Reboot once
   ansible.builtin.shell: reboot  # noqa command-instead-of-shell
+  changed_when: true
   args:
     chdir: /
   when:

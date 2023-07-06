@@ -1,5 +1,4 @@
 ---
-
 # This is a temporary workaround from https://sauronlenoir.be/index.php/en/xxx to enable Xfce on RH family
 #
 # Because RHEL itself doesn't have the PowerTools repo, and so the gtk-doc package doesn't install, this fix only works for CentOS. Not for RedHat.

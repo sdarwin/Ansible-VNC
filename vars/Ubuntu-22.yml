@@ -2,8 +2,8 @@
 default_vnc_server: tigervnc
 
 default_vnc_users:
-  - username: 'ubuntu'
-    usergroup: 'ubuntu'
+  - username: ubuntu
+    usergroup: ubuntu
     # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword
@@ -34,7 +34,7 @@ default_vnc_server_packages:
   tightvnc:
     - tightvncserver
 
-default_xstartup_additional_command1: "dbus-update-activation-environment --systemd --all"
+default_xstartup_additional_command1: dbus-update-activation-environment --systemd --all
 
 # use /usr/share/xsessions/ubuntu.desktop
 default_vnc_desktop_gnome_override: ubuntu

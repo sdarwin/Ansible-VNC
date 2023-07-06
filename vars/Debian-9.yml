@@ -1,7 +1,7 @@
 ---
 default_vnc_users:
-  - username: 'admin'
-    usergroup: 'admin'
+  - username: admin
+    usergroup: admin
     # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword

@@ -1,15 +1,15 @@
 ---
 - name: Checking existence of per-user basic scripts to start vnc
   ansible.builtin.stat:
-    path: "/home/{{ item.username }}/vncstart.sh"
+    path: /home/{{ item.username }}/vncstart.sh
   register: checkvncstart
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to start vnc
   ansible.builtin.template:
     src: "{{ vncstarttemplate }}"
-    dest: "/home/{{ item.item.username }}/vncstart.sh"
-    mode: 0755
+    dest: /home/{{ item.item.username }}/vncstart.sh
+    mode: "0755"
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
@@ -18,27 +18,26 @@
 
 - name: Checking existence of per-user basic scripts to stop vnc
   ansible.builtin.stat:
-    path: "/home/{{ item.username }}/vncstop.sh"
+    path: /home/{{ item.username }}/vncstop.sh
   register: checkvncstop
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to stop vnc
   ansible.builtin.template:
     src: "{{ vncstoptemplate }}"
-    dest: "/home/{{ item.item.username }}/vncstop.sh"
-    mode: 0755
+    dest: /home/{{ item.item.username }}/vncstop.sh
+    mode: "0755"
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
     - vnc_ansible_managed_startup_scripts or not item.stat.exists
   with_items: "{{ checkvncstop.results }}"
 
-
 - name: Create ansible folder, if not already there. For next steps.
   ansible.builtin.file:
     path: /etc/ansible
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
@@ -57,24 +56,24 @@
 
 - name: Create systemd directories
   ansible.builtin.file:
-    path: "/home/{{ item.username }}/.config/systemd/user"
+    path: /home/{{ item.username }}/.config/systemd/user
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
 - name: Checking existence of per-user systemd service files
   ansible.builtin.stat:
-    path: "/home/{{ item.username }}/.config/systemd/user/vncserver.service"
+    path: /home/{{ item.username }}/.config/systemd/user/vncserver.service
   register: checksystemd
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user systemd service files
   ansible.builtin.template:
     src: vncserver.j2
-    dest: "/home/{{ item.item.username }}/.config/systemd/user/vncserver.service"
-    mode: 0644
+    dest: /home/{{ item.item.username }}/.config/systemd/user/vncserver.service
+    mode: "0644"
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:

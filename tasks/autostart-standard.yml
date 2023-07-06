@@ -1,15 +1,15 @@
 ---
 - name: Checking existence of per-user basic scripts to start vnc
   ansible.builtin.stat:
-    path: "/home/{{ item.username }}/vncstart.sh"
+    path: /home/{{ item.username }}/vncstart.sh
   register: checkvncstart
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to start vnc
   ansible.builtin.template:
     src: "{{ vncstarttemplate }}"
-    dest: "/home/{{ item.item.username }}/vncstart.sh"
-    mode: 0755
+    dest: /home/{{ item.item.username }}/vncstart.sh
+    mode: "0755"
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
@@ -18,15 +18,15 @@
 
 - name: Checking existence of per-user basic scripts to stop vnc
   ansible.builtin.stat:
-    path: "/home/{{ item.username }}/vncstop.sh"
+    path: /home/{{ item.username }}/vncstop.sh
   register: checkvncstop
   with_items: "{{ vnc_users }}"
 
 - name: Update per-user basic scripts to stop vnc
   ansible.builtin.template:
     src: "{{ vncstoptemplate }}"
-    dest: "/home/{{ item.item.username }}/vncstop.sh"
-    mode: 0755
+    dest: /home/{{ item.item.username }}/vncstop.sh
+    mode: "0755"
     owner: "{{ item.item.username }}"
     group: "{{ item.item.usergroup | default(item.item.username) }}"
   when:
@@ -36,16 +36,16 @@
 # Nautilus error. Unable to create a required folder.
 - name: Create .config directories.
   ansible.builtin.file:
-    path: "/home/{{ item.username }}/.config"
+    path: /home/{{ item.username }}/.config
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ item.username }}"
     group: "{{ item.usergroup | default(item.username) }}"
   with_items: "{{ vnc_users }}"
 
 - name: Add vncstart.sh to .bashrc for each user
   ansible.builtin.lineinfile:
-    path: "/home/{{ item.username }}/.bashrc"
+    path: /home/{{ item.username }}/.bashrc
     line: /home/{{ item.username }}/vncstart.sh 2> /dev/null
   when:
     - vnc_bashrc_startup

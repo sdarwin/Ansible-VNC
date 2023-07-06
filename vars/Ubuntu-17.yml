@@ -2,8 +2,8 @@
 default_vnc_server: vnc4server
 
 default_vnc_users:
-  - username: 'ubuntu'
-    usergroup: 'ubuntu'
+  - username: ubuntu
+    usergroup: ubuntu
     # port 5901 is 1
     vnc_num: 1
     vnc_default_password: mypassword

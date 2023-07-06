@@ -1,5 +1,4 @@
 ---
-
 # Installer:
 # #!/bin/bash
 # apt-get update
@@ -93,7 +92,7 @@ platforms:
     provisioner:
       attributes:
         extra_vars:
-          vnc_testvar: "testz"
+          vnc_testvar: testz
 #  - name: tightvnc-gnome
 #    attributes:
 #      extra_vars:
@@ -125,7 +124,7 @@ suites:
         vnc_desktop: mate
         vnc_server: tigervnc
         default_vnc_users:
-          - username: 'ec2-user'
+          - username: ec2-user
             # usergroup: 'admin'
             # port 5901 is 1
             vnc_num: 1
