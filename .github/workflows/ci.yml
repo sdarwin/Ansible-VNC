@@ -16,15 +16,16 @@ jobs:
 
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'sdarwin.vnc'
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -44,42 +45,44 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - distro: centos7
-            playbook: converge.yml
+          # - distro: centos7
+          #   playbook: converge.yml
           - distro: centos8
             playbook: converge.yml
-          - distro: debian9
-            playbook: converge.yml
+          # - distro: debian9
+          #   playbook: converge.yml
           - distro: debian10
             playbook: converge.yml
           - distro: debian11
             playbook: converge.yml
-          - distro: ubuntu1604
+          - distro: rockylinux8
             playbook: converge.yml
+          # - distro: ubuntu1604
+          #   playbook: converge.yml
           - distro: ubuntu1804
             playbook: converge.yml
           - distro: ubuntu2004
             playbook: converge.yml
           - distro: ubuntu2204
             playbook: converge.yml
-          - distro: amazonlinux2
+          - distro: ubuntu2404
             playbook: converge.yml
-          - distro: rockylinux8
+          - distro: amazonlinux2
             playbook: converge.yml
 
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: 'sdarwin.vnc'
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install ansible ansible-lint molecule[docker] docker
+        run: pip3 install ansible molecule-plugins[docker] docker
 
       - name: Run Molecule tests.
         run: molecule test
