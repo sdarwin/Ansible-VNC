@@ -46,4 +46,4 @@ then
 fi
 
 sudo mkdir -p /etc/ansible/roles
-sudo env PATH=$PATH ansible-pull -U https://github.com/sdarwin/Ansible-VNC -d /etc/ansible/roles/sdarwin.vnc -i scripts/localinventory default.yml
+sudo env PATH=$PATH ansible-pull --extra-vars "vnc_desktop=xfce4" -U https://github.com/sdarwin/Ansible-VNC -d /etc/ansible/roles/sdarwin.vnc -i scripts/localinventory default.yml

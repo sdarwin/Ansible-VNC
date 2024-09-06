@@ -6,7 +6,9 @@
 #
 # curl -sL https://raw.githubusercontent.com/sdarwin/Ansible-VNC/master/scripts/qa.sh | sudo bash
 #
-#
+# sudo su -
+# cd /etc/ansible
+# ansible-playbook --extra-vars "vnc_desktop=xfce4" roles/sdarwin.vnc/default.yml
 
 set -x
 set -e
