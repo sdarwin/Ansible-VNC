@@ -24,6 +24,8 @@
 #     vnc_num: 5
 #     vnc_default_password: mypassword
 
+# See vars/ files for certain default passwords
+
 ### Choices are "gnome" and "xfce4"
 vnc_desktop: gnome
 # vnc_desktop: xfce4
