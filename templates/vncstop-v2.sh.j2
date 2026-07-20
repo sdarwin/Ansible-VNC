@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo systemctl stop {{ vnc_systemd_service_name }}@:{{ item.item.vnc_num }}.service
 
-{% if ansible_distribution == "Ubuntu" %}
+{% if ansible_facts['distribution'] == "Ubuntu" %}
 # Observing some problems on Ubuntu 22.04 where vncstop.sh doesn't kill all vnc processes.
 sleep 1
 pkill -f /etc/X11/Xtigervnc-session || true

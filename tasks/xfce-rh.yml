@@ -10,7 +10,7 @@
   ansible.builtin.shell:
     cmd: dnf config-manager --set-enabled PowerTools  # noqa command-instead-of-shell
   when:
-    - ansible_distribution == "CentOS"
+    - ansible_facts['distribution'] == "CentOS"
 
 - name: Install sauronlenoir repo
   ansible.builtin.package:

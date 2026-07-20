@@ -2,18 +2,20 @@
 # Include Variables ##########
 
 - name: Include OS-specific variables.
-  ansible.builtin.include_vars: "{{ ansible_os_family }}-family.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}-family.yml"
 
 - name: Include Distribution version specific variables
-  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
 
+# For every `default_<name>` variable, define `<name>` from it, but only when
+# `<name>` has not already been set elsewhere (inventory, group/host vars, extra
+# vars, etc.). This makes the role's per-OS `vars/*.yml` values behave like
+# overridable defaults instead of high-precedence role vars.
 - name: Set facts based on defaults  # noqa var-naming
   ansible.builtin.set_fact:
     "{{ item[8:] }}": "{{ lookup('vars', item) }}"
-  when:
-    - item is match("^default_")
-    - vars[item[8:]] is not defined
-  with_items: "{{ vars | list }}"
+  when: item[8:] not in query('varnames', '.*')
+  loop: "{{ query('varnames', '^default_') }}"
 
 ##########
 
@@ -37,32 +39,32 @@
     state: present
     update_cache: true
   when:
-    - ansible_distribution_version is version_compare('17.10', '==')
+    - ansible_facts['distribution_version'] is version_compare('17.10', '==')
 
 - name: Fix Ubuntu 17.10 bug, 2
   ansible.builtin.service:
     name: NetworkManager
     state: started
   when:
-    - ansible_distribution_version is version_compare('17.10', '==')
+    - ansible_facts['distribution_version'] is version_compare('17.10', '==')
 
 - name: Add customization for xfce4 RH
   ansible.builtin.import_tasks: xfce-rh.yml
   when:
-    - ansible_os_family == "RedHat"
-    - ansible_distribution_major_version == "8"
+    - ansible_facts['os_family'] == "RedHat"
+    - ansible_facts['distribution_major_version'] == "8"
     - vnc_desktop == "xfce4"
 
 - name: Install epel gpg key
   ansible.builtin.rpm_key:
     state: present
-    key: http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
-  when: (ansible_os_family == "RedHat") and ( ansible_distribution != "Amazon" )
+    key: http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_facts['distribution_major_version'] }}
+  when: (ansible_facts['os_family'] == "RedHat") and ( ansible_facts['distribution'] != "Amazon" )
 
 # - name: install epel gpg key
-#   command: rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+#   command: rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_facts['distribution_major_version'] }}
 #   when:
-#     - ansible_os_family == "RedHat"
+#     - ansible_facts['os_family'] == "RedHat"
 
 - name: Install general packages
   ansible.builtin.package:
@@ -76,7 +78,7 @@
   with_items: "{{ vnc_amazon_linux_extras[vnc_desktop] }}"
   changed_when: true
   when:
-    - ansible_distribution == "Amazon"
+    - ansible_facts['distribution'] == "Amazon"
     - vnc_amazon_linux_extras is defined
     - vnc_amazon_linux_extras[vnc_desktop] is defined
 
@@ -107,16 +109,16 @@
     dest: /opt/downloads/
     mode: "0755"
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_facts['distribution'] == "Ubuntu"
     - vnc_server == "tigervnc"
-    - ansible_distribution_major_version == "16"
+    - ansible_facts['distribution_major_version'] == "16"
 
 - name: Install tigervnc
   ansible.builtin.shell: apt install -y "/opt/downloads/{{ vnc_tiger_file }}"  # noqa command-instead-of-shell
   when:
-    - ansible_distribution == "Ubuntu"
+    - ansible_facts['distribution'] == "Ubuntu"
     - vnc_server == "tigervnc"
-    - ansible_distribution_major_version == "16"
+    - ansible_facts['distribution_major_version'] == "16"
   changed_when: false
 
 - name: Create VNC group and user
@@ -263,7 +265,7 @@
         group: root
         state: directory
       when:
-        - ansible_os_family == 'RedHat'
+        - ansible_facts['os_family'] == 'RedHat'
 
     - name: Define mate desktop
       ansible.builtin.template:
@@ -274,7 +276,7 @@
         group: root
       when:
         - vnc_desktop == "mate"
-        - ansible_os_family == 'RedHat'
+        - ansible_facts['os_family'] == 'RedHat'
 
     - name: Set vncstart template
       ansible.builtin.set_fact:

@@ -1,5 +1,5 @@
 [Desktop]
-{% if vnc_desktop == "gnome" and ansible_distribution == "Ubuntu" %}
+{% if vnc_desktop == "gnome" and ansible_facts['distribution'] == "Ubuntu" %}
 Session=ubuntu
 {% elif vnc_desktop == "gnome" %}
 Session=gnome

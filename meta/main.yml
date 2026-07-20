@@ -4,7 +4,7 @@ galaxy_info:
   author: sdarwin
   description: VNC Installer
   license: GPLv2
-  min_ansible_version: "2.4"
+  min_ansible_version: "2.8"
   platforms:
     - name: EL
       versions:

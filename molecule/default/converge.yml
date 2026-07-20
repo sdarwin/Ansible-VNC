@@ -17,27 +17,27 @@
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 600
-      when: ansible_os_family == 'Debian'
+      when: ansible_facts['os_family'] == 'Debian'
     - name: Create ubuntu
       ansible.builtin.user:
         name: ubuntu
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_facts['distribution'] == 'Ubuntu'
     - name: Create admin
       ansible.builtin.user:
         name: admin
-      when: ansible_distribution == 'Debian'
+      when: ansible_facts['distribution'] == 'Debian'
     - name: Create centos
       ansible.builtin.user:
         name: centos
-      when: ansible_distribution == 'CentOS'
+      when: ansible_facts['distribution'] == 'CentOS'
     - name: Create ec2-user
       ansible.builtin.user:
         name: ec2-user
-      when: ansible_distribution == 'Amazon'
+      when: ansible_facts['distribution'] == 'Amazon'
     - name: Create rocky
       ansible.builtin.user:
         name: rocky
-      when: ansible_distribution == 'Rocky'
+      when: ansible_facts['distribution'] == 'Rocky'
 
     - name: Wait for systemd to complete initialization.  # noqa command-instead-of-module
       ansible.builtin.command: systemctl is-system-running
@@ -47,14 +47,14 @@
         'degraded' in systemctl_status.stdout
       retries: 30
       delay: 5
-      when: ansible_service_mgr == 'systemd'
+      when: ansible_facts['service_mgr'] == 'systemd'
       changed_when: false
       failed_when: systemctl_status.rc > 1
     - name: Fix coreutils-single on containers
       ansible.builtin.command: dnf install -y --allowerasing coreutils
       when:
-        - ansible_os_family == 'RedHat'
-        - ansible_distribution_major_version| int > 7
+        - ansible_facts['os_family'] == 'RedHat'
+        - ansible_facts['distribution_major_version']| int > 7
       changed_when: false
   roles:
     - role: sdarwin.vnc
